@@ -1,7 +1,12 @@
-vendor
+vendor/
+docs/
+composer.lock
+*.sublime-project
+*.sublime-workspace
 composer.phar
 config/config.php
 config/test.php
 pux/compiled.php
 docs
 route/compiled.php
+
