@@ -22,5 +22,9 @@ pux:
 test: check
 	vendor/phpunit/phpunit/phpunit.php -c phpunit.xml
 
+doc:
+	rm -fr docs/html
+	doxygen doxygen.conf
 
-.PHONY: test update-dep check update
+
+.PHONY: test update-dep check update docs

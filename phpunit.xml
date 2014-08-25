@@ -1,0 +1,25 @@
+<phpunit
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.0/phpunit.xsd"
+         backupGlobals="true"
+         backupStaticAttributes="false"
+         bootstrap="test/entry.php"
+         colors="true">
+
+<testsuites>
+  <testsuite name="Guestbook">
+    <file>test/FoodTest/Model/Guestbook/ThreadTest.php</file>
+    <file>test/FoodTest/Model/Guestbook/PostTest.php</file>
+  </testsuite>
+</testsuites>
+<filter>
+  <blacklist>
+    <directory>vendor</directory>
+    <directory>test</directory>
+  </blacklist>
+</filter>
+<logging>
+  <log type="coverage-html" target="docs/coverage" charset="UTF-8" />
+</logging>
+
+</phpunit>
