@@ -9,6 +9,7 @@
 <testsuites>
   <testsuite name="Guestbook">
     <file>test/FoodTest/Model/Guestbook/ThreadTest.php</file>
+    <file>test/FoodTest/Model/Guestbook/PostTest.php</file>
   </testsuite>
 </testsuites>
 <filter>
