@@ -3,8 +3,6 @@
 namespace Food\Model\Guestbook;
 
 use PDO;
-use PDOStatement;
-use Fruit\Config;
 use Fruit\Seed;
 
 /**

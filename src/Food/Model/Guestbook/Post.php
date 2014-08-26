@@ -3,9 +3,7 @@
 namespace Food\Model\Guestbook;
 
 use PDO;
-use PDOStatement;
 use DateTime;
-use Fruit\Config;
 use Fruit\Seed;
 
 /**

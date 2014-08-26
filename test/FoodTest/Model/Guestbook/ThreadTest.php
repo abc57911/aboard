@@ -3,7 +3,6 @@
 namespace FoodTest\Model\Guestbook;
 
 use PHPUnit_Extensions_Database_TestCase;
-use Fruit\Config;
 use FoodTest\DataSet;
 use FoodTest\Tool;
 use Food\Model\Guestbook\Thread;
