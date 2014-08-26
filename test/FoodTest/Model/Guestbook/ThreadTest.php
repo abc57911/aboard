@@ -71,7 +71,7 @@ class ThreadTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->assertEquals(1, $this->getConnection()->getRowCount('thread'), 'Pre-Condition');
         $ret = Thread::load(1);
-        $ret->title = self::TITLE;
+        $ret->setTitle(self::TITLE);
         $ret->save();
         $actual = $this->getConnection()->createQueryTable('thread', 'SELECT * FROM thread');
         $expect = $this->getUpdatedDataSet()->getTable('thread');
