@@ -12,10 +12,7 @@ class Thread extends Seed
 {
     private $id;
 
-    /**
-     * 討論串的標題
-     */
-    public $title;
+    private $title;
 
     protected function __construct ($i, $t)
     {
@@ -117,5 +114,25 @@ class Thread extends Seed
     public function getToken()
     {
         return $this->id;
+    }
+
+    /**
+     * 取得標題
+     *
+     * @return string of title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * 設定標題
+     *
+     * @param string $t title
+     */
+    public function setTitle($t)
+    {
+        $this->title = $t;
     }
 }
