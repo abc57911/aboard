@@ -11,6 +11,9 @@
     <file>test/FoodTest/Model/Guestbook/ThreadTest.php</file>
     <file>test/FoodTest/Model/Guestbook/PostTest.php</file>
   </testsuite>
+  <testsuite name="Album">
+    <file>test/FoodTest/Model/Album/AlbumTest.php</file>
+  </testsuite>
 </testsuites>
 <filter>
   <blacklist>
