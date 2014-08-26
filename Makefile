@@ -26,7 +26,7 @@ test: check
 	vendor/phpunit/phpunit/phpunit.php -c phpunit.xml
 
 doc:
-	rm -fr docs/html
+	rm -fr docs/html/*.html docs/html/*.png docs/html/*.css docs/html/*.js docs/html/search
 	doxygen doxygen.conf
 
 
