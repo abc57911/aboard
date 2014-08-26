@@ -13,6 +13,7 @@
   </testsuite>
   <testsuite name="Album">
     <file>test/FoodTest/Model/Album/AlbumTest.php</file>
+    <file>test/FoodTest/Model/Album/PhotoTest.php</file>
   </testsuite>
 </testsuites>
 <filter>

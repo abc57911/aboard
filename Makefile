@@ -20,6 +20,9 @@ pux:
 	vendor/corneltek/pux/pux compile -o route/compiled.php route/mux.php
 
 test: check
+	rm -fr test/test_files
+	mkdir test/test_files
+	cp test/files/test.jpg test/test_files/
 	vendor/phpunit/phpunit/phpunit.php -c phpunit.xml
 
 doc:

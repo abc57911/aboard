@@ -17,14 +17,14 @@ return array(
     
     'db' => array(
         'default' => array(
-            'constr' => 'mysql:host=127.0.0.1;dbname=foodorder;charset=utf8',
+            'constr' => 'mysql:host=127.0.0.1;dbname=foodtest;charset=utf8',
             'user'   => 'foodorder',
             'pass'   => '1234'
-        ),
+        )
     ),
 
     'upload' => array(
-        'dir' => BASE_DIR . '/files',
-        'prefix' => 'ul_'
+        'dir' => TEST_DIR . '/test_files',
+        'prefix' => 'test_'
     )
 );
