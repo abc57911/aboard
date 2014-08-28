@@ -141,6 +141,9 @@ class Post extends Seed
      */
     public function getUpdateTime()
     {
+        if ($this->update_time == null) {
+            return null;
+        }
         return new DateTime('@' . $this->update_time);
     }
 

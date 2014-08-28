@@ -210,6 +210,9 @@ class User extends Seed
      */
     public function getUpdateTime()
     {
+        if ($this->update == null) {
+            return null;
+        }
         return new DateTime('@' . $this->update);
     }
 

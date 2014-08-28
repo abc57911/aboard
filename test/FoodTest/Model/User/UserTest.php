@@ -70,6 +70,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->assertEquals(1, $this->getConnection()->getRowCount('member'), 'Pre-Condition');
         $ret = User::create(self::NAME, self::EMAIL2, self::NICK2, self::PASS2);
+        $this->assertNull($ret->getUpdateTime(), 'Should be null if no update time');
         $this->assertInstanceOf('Food\Model\User\User', $ret);
         $this->assertEquals(2, $this->getConnection()->getRowCount('member'), 'Inserting failed');
     }

@@ -75,6 +75,7 @@ class PostTest extends PHPUnit_Extensions_Database_TestCase
     {
         $this->assertEquals(2, $this->getConnection()->getRowCount('post'), 'Pre-Condition');
         $ret = Post::create(Thread::load(1), self::CONTENT);
+        $this->assertNull($ret->getUpdateTime(), 'Should return null when no update time');
         $this->assertInstanceOf('Food\Model\Guestbook\Post', $ret);
         $this->assertEquals(3, $this->getConnection()->getRowCount('post'), 'Inserting failed');
     }
