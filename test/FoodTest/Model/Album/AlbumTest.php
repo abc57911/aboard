@@ -94,4 +94,10 @@ class AlbumTest extends PHPUnit_Extensions_Database_TestCase
         $expect = $this->getUpdatedDataSet()->getTable('album');
         $this->assertTablesEqual($expect, $actual, 'update failed');
     }
+
+    public function testListAll()
+    {
+        $list = Album::listAll();
+        $this->assertEquals(['1'], $list, 'Wtf are you listing!');
+    }
 }
