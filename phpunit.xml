@@ -15,6 +15,9 @@
     <file>test/FoodTest/Model/Album/AlbumTest.php</file>
     <file>test/FoodTest/Model/Album/PhotoTest.php</file>
   </testsuite>
+  <testsuite name="User">
+    <file>test/FoodTest/Model/User/UserTest.php</file>
+  </testsuite>
 </testsuites>
 <filter>
   <blacklist>
