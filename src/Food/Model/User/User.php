@@ -68,7 +68,8 @@ class User extends Seed
     public static function load($id)
     {
         $db = self::getConfig()->getDb();
-        $sql = 'SELECT name, email, nick, pass, UNIX_TIMESTAMP(create_time), UNIX_TIMESTAMP(update_time) FROM member WHERE id = ?';
+        $sql = 'SELECT name, email, nick, pass, ';
+        $sql .= 'UNIX_TIMESTAMP(create_time), UNIX_TIMESTAMP(update_time) FROM member WHERE id = ?';
         
         $stmt = $db->prepare($sql);
         $stmt->bindValue(1, $id);

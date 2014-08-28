@@ -54,7 +54,7 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
                 'member' => [
                     [
                         'id' => 1,
-                        'name' => self::NAME, 
+                        'name' => self::NAME,
                         'email' => self::EMAIL2,
                         'nick' => self::NICK2,
                         'pass' => self::PASS2,
@@ -102,7 +102,10 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
         $ret->setNick(self::NICK2);
         $ret->setEmail(self::EMAIL2);
         $ret->save();
-        $actual = $this->getConnection()->createQueryTable('member', 'SELECT * FROM member WHERE id = 1');
+        $actual = $this->getConnection()->createQueryTable(
+            'member',
+            'SELECT * FROM member WHERE id = 1'
+        );
         $expect = $this->getUpdatedDataSet($ret->getUpdateTime())->getTable('member');
         $this->assertTablesEqual($expect, $actual, 'update failed');
         $ret->delete();
