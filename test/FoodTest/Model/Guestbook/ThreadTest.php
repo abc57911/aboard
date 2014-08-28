@@ -80,4 +80,10 @@ class ThreadTest extends PHPUnit_Extensions_Database_TestCase
         $ret->save();
         $this->assertNull($ret->getToken(), 'Does not clear token after deleting');
     }
+
+    public function testListAll()
+    {
+        $list = Thread::listAll();
+        $this->assertEquals(['1'], $list, 'Wtf thread are you listing?');
+    }
 }

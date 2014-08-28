@@ -135,4 +135,23 @@ class Thread extends Seed
     {
         $this->title = $t;
     }
+
+    /**
+     * 取得所有討論串
+     *
+     * @return array of tokens
+     */
+    public static function listAll()
+    {
+        $db = self::getConfig()->getDb();
+        $sql = 'SELECT id FROM thread';
+
+        $stmt = $db->prepare($sql);
+        $ret = null;
+        if ($stmt->execute()) {
+            $ret = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        }
+        $stmt->closeCursor();
+        return $ret;
+    }
 }
