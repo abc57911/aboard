@@ -193,4 +193,24 @@ class Album extends Seed
         $stmt->closeCursor();
         return $ret;
     }
+
+    /**
+     * 取得相簿中的所有圖片
+     *
+     * @return array of tokens to Photo
+     */
+    public function listPhoto()
+    {
+        $db = self::getConfig()->getDb();
+        $sql = 'SELECT path FROM photo WHERE aid = ?';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(1, $this->id);
+        $ret = null;
+        if ($stmt->execute()) {
+            $ret = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        }
+        $stmt->closeCursor();
+        return $ret;
+    }
 }
