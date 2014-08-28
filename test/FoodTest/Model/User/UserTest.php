@@ -113,4 +113,24 @@ class UserTest extends PHPUnit_Extensions_Database_TestCase
         $ret->save();
         $this->assertNull($ret->getToken(), 'Does not clear token after deleting');
     }
+
+    public function testPassword()
+    {
+        $u = User::load(1);
+        $this->assertTrue($u->validatePassword(self::PASS));
+        $this->assertFalse($u->validatePassword(self::PASS2));
+    }
+
+    public function testListUser()
+    {
+        $expect = ['1'];
+
+        $this->assertEquals($expect, User::listAll(), 'Fail to list all user.');
+        $this->assertEquals($expect, User::listByName(self::NAME), 'Fail to list user by name.');
+        $this->assertEquals([], User::listByName(self::NICK), 'Fail to list user by name. (X)');
+        $this->assertEquals($expect, User::listByEmail(self::EMAIL), 'Fail to list user by email.');
+        $this->assertEquals([], User::listByEmail(self::EMAIL2), 'Fail to list user by email. (X)');
+        $this->assertEquals($expect, User::listByNick(self::NICK), 'Fail to list user by nick.');
+        $this->assertEquals([], User::listByNick(self::NICK2), 'Fail to list user by nick. (X)');
+    }
 }
