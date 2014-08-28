@@ -19,10 +19,20 @@ class ThreadTest extends PHPUnit_Extensions_Database_TestCase
 
     public function getDataSet()
     {
+        $d = new \DateTime();
         return new DataSet(
             [
                 'thread' => [
                     ['id' => 1, 'title' => 'test title']
+                ],
+                'post' => [
+                    [
+                        'id' => 1,
+                        'content' => 'test',
+                        'create_time' => $d->format('Y-m-d H:i:s'),
+                        'update_time' => null,
+                        'tid' => 1
+                    ]
                 ]
             ]
         );
@@ -79,5 +89,18 @@ class ThreadTest extends PHPUnit_Extensions_Database_TestCase
         $ret->delete();
         $ret->save();
         $this->assertNull($ret->getToken(), 'Does not clear token after deleting');
+    }
+
+    public function testListAll()
+    {
+        $list = Thread::listAll();
+        $this->assertEquals(['1'], $list, 'Wtf thread are you listing?');
+    }
+
+    public function testListPost()
+    {
+        $thread = Thread::load(1);
+        $list = $thread->listPosts();
+        $this->assertEquals(['1'], $list, 'Wtf thread are you listing?');
     }
 }

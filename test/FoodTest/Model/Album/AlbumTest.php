@@ -33,6 +33,16 @@ class AlbumTest extends PHPUnit_Extensions_Database_TestCase
                         'description' => null,
                         'create_time' => $d->format('Y-m-d H:i:s')
                     ]
+                ],
+                'photo' => [
+                    [
+                        'path' => 'test',
+                        'mime' => 'image/jpeg',
+                        'title' => 'test',
+                        'description' => null,
+                        'create_time' => $d->format('Y-m-d H:i:s'),
+                        'aid' => 1
+                    ]
                 ]
             ]
         );
@@ -93,5 +103,18 @@ class AlbumTest extends PHPUnit_Extensions_Database_TestCase
         $actual = $this->getConnection()->createQueryTable('album', 'SELECT * FROM album');
         $expect = $this->getUpdatedDataSet()->getTable('album');
         $this->assertTablesEqual($expect, $actual, 'update failed');
+    }
+
+    public function testListAll()
+    {
+        $list = Album::listAll();
+        $this->assertEquals(['1'], $list, 'Wtf album are you listing!');
+    }
+
+    public function testListPhoto()
+    {
+        $album = Album::load(1);
+        $list = $album->listPhoto();
+        $this->assertEquals(['test'], $list, 'Wtf photo are you listing!');
     }
 }

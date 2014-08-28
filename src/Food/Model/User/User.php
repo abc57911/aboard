@@ -226,4 +226,90 @@ class User extends Seed
     {
         return $p === $this->pass;
     }
+
+    /**
+     * 取得所有使用者
+     *
+     * @return array of tokens
+     */
+    public static function listAll()
+    {
+        $db = self::getConfig()->getDb();
+        $sql = 'SELECT id FROM member';
+        
+        $stmt = $db->prepare($sql);
+        $ret = null;
+
+        if ($stmt->execute()) {
+            $ret = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        }
+        $stmt->closeCursor();
+        return $ret;
+    }
+
+    /**
+     * 用名稱搜尋
+     *
+     * @param string $name user name
+     * @return array of tokens or null
+     */
+    public static function listByName($name)
+    {
+        $db = self::getConfig()->getDb();
+        $sql = 'SELECT id FROM member WHERE name LIKE ?';
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(1, '%' . $name . '%');
+        $ret = null;
+
+        if ($stmt->execute()) {
+            $ret = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        }
+        $stmt->closeCursor();
+        return $ret;
+    }
+
+    /**
+     * 用名稱搜尋
+     *
+     * @param string $email email address
+     * @return array of tokens or null
+     */
+    public static function listByEmail($email)
+    {
+        $db = self::getConfig()->getDb();
+        $sql = 'SELECT id FROM member WHERE email LIKE ?';
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(1, '%' . $email . '%');
+        $ret = null;
+
+        if ($stmt->execute()) {
+            $ret = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        }
+        $stmt->closeCursor();
+        return $ret;
+    }
+
+    /**
+     * 用名稱搜尋
+     *
+     * @param string $nick nick name
+     * @return array of tokens or null
+     */
+    public static function listByNick($nick)
+    {
+        $db = self::getConfig()->getDb();
+        $sql = 'SELECT id FROM member WHERE nick LIKE ?';
+        
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(1, '%' . $nick . '%');
+        $ret = null;
+
+        if ($stmt->execute()) {
+            $ret = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        }
+        $stmt->closeCursor();
+        return $ret;
+    }
 }
