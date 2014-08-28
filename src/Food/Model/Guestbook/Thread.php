@@ -154,4 +154,24 @@ class Thread extends Seed
         $stmt->closeCursor();
         return $ret;
     }
+
+    /**
+     * 取得此串所有文章
+     *
+     * @return array of token to Post
+     */
+    public function listPosts()
+    {
+        $db = self::getConfig()->getDb();
+        $sql = 'SELECT id FROM post WHERE tid = ?';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(1, $this->id);
+        $ret = null;
+        if ($stmt->execute()) {
+            $ret = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+        }
+        $stmt->closeCursor();
+        return $ret;
+    }
 }
