@@ -18,32 +18,21 @@ class AlbumController extends Seed
             $allalbum[$a] = [$album->getTitle(),$album->getDescription(),$album->getToken()];
             
         }
-        var_dump($allalbum);
-        exit();
+
+        return json_encode($allalbum);
     }
 
-    public function create()
+    public function allphoto($id)
     {
-        $title = 'ccc';
-        $desc = 'aaa';
-        Album::create($title, $desc);
-    }
-
-    public function edit()
-    {
-        $i = '3';
-        $t = 'AAA';
-        $d = 'BBB';
-        $aaa = Album::load($i);
-        $aaa->setTitle($t);
-        $aaa->setDescription($d);
-        $aaa->save();
-    }
-
-    public function del()
-    {
-        $i = '3';
-        $aaa = Album::load($i);
-        $aaa->delete();
-    }
+        $album = Album::load($id);
+        $aaa = $album->listPhoto();
+        foreach ($aaa as $a) {
+            $photo = Photo::load($a);
+            $allphoto[$a] = [
+                $photo->getTitle(),
+                $photo->getDescription(),
+                'aboard/photo/show/' . $photo->getToken()
+            ];
+        }
+        return json_encode($allphoto);
 }
