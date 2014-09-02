@@ -4,6 +4,7 @@ require implode(DIRECTORY_SEPARATOR, [BASE_DIR, 'vendor', 'autoload.php']);
 
 $mux = new Pux\Mux;
 
+
 $mux->any('/guestbook/thread/',['Food\Controller\Guestbook\ThreadController','index']);
 $mux->get('/guestbook/thread/view/:token',['Food\Controller\Guestbook\ThreadController','view']);
 $mux->get('/guestbook/thread/create/:title',['Food\Controller\Guestbook\ThreadController','create']);
@@ -15,4 +16,31 @@ $mux->get('/guestbook/post/create/:tid/:content',['Food\Controller\Guestbook\Pos
 $mux->get('/guestbook/post/delete/:token',['Food\Controller\Guestbook\PostController','delete']);
 $mux->get('/guestbook/post/edit/:token/:content',['Food\Controller\Guestbook\PostController','edit']);
 
+
+
+$mux->get('/users', ['Food\Controller\User\UserController', 'getAllUser']);
+
+$mux->post('/user', ['Food\Controller\User\UserController', 'addUser']);
+
+$mux->get(
+    '/user/:name',
+    ['Food\Controller\User\UserController', 'getUserByName'],
+    ['require' => [ 'name' => '([a-z0-9]{8,16})']]
+);
+
+$mux->put(
+    '/user/:name',
+    ['Food\Controller\User\UserController', 'editUser'],
+    ['require' => [ 'name' => '([a-z0-9]{8,16})']]
+);
+
+$mux->delete(
+    '/user/:name',
+    ['Food\Controller\User\UserController', 'deleteUser'],
+    ['require' => [ 'name' => '([a-z0-9]{8,16})']]
+);
+
+$mux->sort();
+
 return $mux;
+
