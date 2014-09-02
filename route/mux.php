@@ -7,7 +7,7 @@ require implode(DIRECTORY_SEPARATOR, [
 ]);
 
 $mux = new Pux\Mux();
-
+/* James */
 /* thread controller */
 $mux->get('/guestbook/thread',['Food\Controller\Guestbook\ThreadController','index']);
 
@@ -123,23 +123,28 @@ $mux->get(
 );
 $mux->get('/guestbook/post/edit/',['Food\Controller\Guestbook\PostController','edit']);
 
-$mux->put('/user/:name', [
-    'Food\Controller\User\UserController',
-    'editUser'
-], [
-    'require' => [
-        'name' => '([a-z0-9]{8,16})'
-    ]
-]);
+/* ken & disney */
+$mux->get('/users', ['Food\Controller\User\UserController', 'getAllUser']);
 
-$mux->delete('/user/:name', [
-    'Food\Controller\User\UserController',
-    'deleteUser'
-], [
-    'require' => [
-        'name' => '([a-z0-9]{8,16})'
-    ]
-]);
+$mux->post('/user', ['Food\Controller\User\UserController', 'addUser']);
+
+$mux->get(
+    '/user/:name',
+    ['Food\Controller\User\UserController', 'getUserByName'],
+    ['require' => [ 'name' => '([a-z0-9]{8,16})']]
+);
+
+$mux->put(
+    '/user/:name',
+    ['Food\Controller\User\UserController', 'editUser'],
+    ['require' => [ 'name' => '([a-z0-9]{8,16})']]
+);
+
+$mux->delete(
+    '/user/:name',
+    ['Food\Controller\User\UserController', 'deleteUser'],
+    ['require' => [ 'name' => '([a-z0-9]{8,16})']]
+);
 
 // owen
 $mux->get('/album/index', [
