@@ -34,7 +34,12 @@ class ThreadController extends Seed
             );
         } else {
             $thread = Thread::load($token);
-            if ($thread->getToken() == $token) {
+            if (is_null($thread)) {
+                $msg = array(
+                    'secess' => false,
+                    'string' => 'Error. Could not find token ' .$token. '.'
+                );
+            } elseif ($thread->getToken() == $token) {
                 $msg = array(
                     'seccess' => true,
                     'string' => 'Seccess. You can use thread to do something',
@@ -47,7 +52,7 @@ class ThreadController extends Seed
             } else {
                 $msg = array(
                     'seccess' => false,
-                    'string' => 'Error. Could not find token ' .$token. '.'
+                    'string' => 'Error. Could not find token #' .$token. '.'
                 );
             }
         }
@@ -86,7 +91,12 @@ class ThreadController extends Seed
             );
         } else {
             $thread = Thread::load($token);
-            if ($thread->getToken() == $token) {
+            if (is_null($thread)) {
+                $msg = array(
+                    'secess' => false,
+                    'string' => 'Error. Could not find token ' .$token. '.'
+                );
+            } elseif ($thread->getToken() == $token) {
                 $thread->delete();
                 $msg = array(
                     'seccess' => true,
@@ -95,7 +105,7 @@ class ThreadController extends Seed
             } else {
                 $msg = array(
                     'seccess' => false,
-                    'string' => 'Error. Could not find token ' .$token. '.'
+                    'string' => 'Error. Could not find token #' .$token. '.'
                 );
             }
         }
@@ -110,7 +120,12 @@ class ThreadController extends Seed
             );
         } else {
             $thread = Thread::load($token);
-            if ($thread->getToken() == $token) {
+            if (is_null($thread)) {
+                $msg = array(
+                    'secess' => false,
+                    'string' => 'Error. Could not find token ' .$token. '.'
+                );
+            } elseif ($thread->getToken() == $token) {
                 $thread->setTitle($title);
                 $thread->save();
                 $msg = array(
@@ -121,7 +136,7 @@ class ThreadController extends Seed
             } else {
                 $msg = array(
                     'seccess' => false,
-                    'string' => 'Error. Could not find token ' .$token. '.'
+                    'string' => 'Error. Could not find token #' .$token. '.'
                 );
             }
         }

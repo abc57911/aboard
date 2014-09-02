@@ -8,62 +8,120 @@ require implode(DIRECTORY_SEPARATOR, [
 
 $mux = new Pux\Mux();
 
-$mux->any('/guestbook/thread/', [
-    'Food\Controller\Guestbook\ThreadController',
-    'index'
-]);
-$mux->get('/guestbook/thread/view/:token', [
-    'Food\Controller\Guestbook\ThreadController',
-    'view'
-]);
-$mux->get('/guestbook/thread/create/:title', [
-    'Food\Controller\Guestbook\ThreadController',
-    'create'
-]);
-$mux->get('/guestbook/thread/delete/:token', [
-    'Food\Controller\Guestbook\ThreadController',
-    'delete'
-]);
-$mux->get('/guestbook/thread/edit/:token/:title', [
-    'Food\Controller\Guestbook\ThreadController',
-    'edit'
-]);
+/* thread controller */
+$mux->get('/guestbook/thread',['Food\Controller\Guestbook\ThreadController','index']);
 
-$mux->get('/guestbook/post/view/:token', [
-    'Food\Controller\Guestbook\PostController',
-    'view'
-]);
-$mux->get('/guestbook/post/create/:tid/:content', [
-    'Food\Controller\Guestbook\PostController',
-    'create'
-]);
-$mux->get('/guestbook/post/delete/:token', [
-    'Food\Controller\Guestbook\PostController',
-    'delete'
-]);
-$mux->get('/guestbook/post/edit/:token/:content', [
-    'Food\Controller\Guestbook\PostController',
-    'edit'
-]);
-
-$mux->get('/users', [
-    'Food\Controller\User\UserController',
-    'getAllUser'
-]);
-
-$mux->post('/user', [
-    'Food\Controller\User\UserController',
-    'addUser'
-]);
-
-$mux->get('/user/:name', [
-    'Food\Controller\User\UserController',
-    'getUserByName'
-], [
-    'require' => [
-        'name' => '([a-z0-9]{8,16})'
+$mux->get(
+    '/guestbook/thread/view/:token',
+    [
+        'Food\Controller\Guestbook\ThreadController',
+        'view'
+    ],
+    [
+        'require' => [ 'token' => '\d+', ],
+        'default' => [ 'token' => null, ]
     ]
-]);
+);
+$mux->get('/guestbook/thread/view/',['Food\Controller\Guestbook\ThreadController','view']);
+
+$mux->get(
+    '/guestbook/thread/create/:title',
+    [
+        'Food\Controller\Guestbook\ThreadController',
+        'create'
+    ],
+    [
+        'default' => [ 'title' => null, ]
+    ]
+);
+$mux->get('/guestbook/thread/create/',['Food\Controller\Guestbook\ThreadController','create']);
+
+$mux->get(
+    '/guestbook/thread/delete/:token',
+    [
+        'Food\Controller\Guestbook\ThreadController',
+        'delete'
+    ],
+    [
+        'require' => [ 'token' => '\d+', ],
+        'default' => [ 'token' => null, ]
+    ]
+);
+$mux->get('/guestbook/thread/delete/',['Food\Controller\Guestbook\ThreadController','delete']);
+
+$mux->get(
+    '/guestbook/thread/edit/:token/:title',
+    [
+        'Food\Controller\Guestbook\ThreadController',
+        'edit'
+    ],
+    [
+        'require' => [ 'token' => '\d+', ],
+        'default' => [
+            'token' => null, 
+            'title' => null,
+        ]
+    ]
+);
+$mux->get('/guestbook/thread/edit/',['Food\Controller\Guestbook\ThreadController','edit']);
+/* post controller */
+$mux->get(
+    '/guestbook/post/view/:token',
+    [
+        'Food\Controller\Guestbook\PostController',
+        'view'
+    ],
+    [
+        'require' => [ 'token' => '\d+', ],
+        'default' => [ 'token' => null, ]
+    ]
+);
+$mux->get('/guestbook/post/view/',['Food\Controller\Guestbook\PostController','view']);
+
+$mux->get(
+    '/guestbook/post/create/:tid/:content',
+    [
+        'Food\Controller\Guestbook\PostController',
+        'create'
+    ],
+    [
+        'require' => [ 'tid' => '\d+', ],
+        'default' => [
+            'tid' => null, 
+            'content' => null,
+        ]
+    ]
+);
+$mux->get('/guestbook/post/create/',['Food\Controller\Guestbook\PostController','create']);
+
+$mux->get(
+    '/guestbook/post/delete/:token',
+    [
+        'Food\Controller\Guestbook\PostController',
+        'delete'
+    ],
+    [
+        'require' => [ 'token' => '\d+', ],
+        'default' => [ 'token' => null, ]
+    ]
+);
+$mux->get('/guestbook/post/delete/',['Food\Controller\Guestbook\PostController','delete']);
+
+$mux->get(
+    '/guestbook/post/edit/:token/:content',
+    [
+        'Food\Controller\Guestbook\PostController',
+        'edit'
+    ],
+    [
+        'require' => [ 'token' => '\d+', ],
+        'default' => [
+            'token' => null, 
+            'content' => null,
+        ]
+    ]
+);
+$mux->get('/guestbook/post/edit/',['Food\Controller\Guestbook\PostController','edit']);
 
 $mux->put('/user/:name', [
     'Food\Controller\User\UserController',

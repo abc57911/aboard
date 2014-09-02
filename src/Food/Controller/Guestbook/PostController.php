@@ -17,7 +17,12 @@ class PostController extends Seed
             );
         } else {
             $post = Post::load($token);
-            if ($post->getToken() == $token) {
+            if (is_null($post)) {
+                $msg = array(
+                    'seccess' => false,
+                    'string' => 'Error. Could not find token ' .$token. '.'
+                );
+            } elseif ($post->getToken() == $token) {
                 $msg = array(
                     'seccess' => true,
                     'string' => 'Seccess. You can use post to do something',
@@ -29,7 +34,7 @@ class PostController extends Seed
             } else {
                 $msg = array(
                     'seccess' => false,
-                    'string' => 'Error. Could not find token ' .$token. '.'
+                    'string' => 'Error. Could not find token #' .$token. '.'
                 );
             }
         }
@@ -69,7 +74,12 @@ class PostController extends Seed
             );
         } else {
             $post = Post::load($token);
-            if ($post->getToken() == $token) {
+            if (is_null($post)) {
+                $msg = array(
+                    'seccess' => false,
+                    'string' => 'Error. Could not find token ' .$token. '.'
+                );
+            } elseif ($post->getToken() == $token) {
                 $post->delete();
                 $msg = array(
                     'seccess' => true,
@@ -78,7 +88,7 @@ class PostController extends Seed
             } else {
                 $msg = array(
                     'seccess' => false,
-                    'string' => 'Error. Could not find token ' .$token. '.'
+                    'string' => 'Error. Could not find token #' .$token. '.'
                 );
             }
         }
@@ -93,7 +103,12 @@ class PostController extends Seed
             );
         } else {
             $post = Post::load($token);
-            if ($post->getToken() == $token) {
+            if (is_null($post)) {
+                $msg = array(
+                    'seccess' => false,
+                    'string' => 'Error. Could not find token ' .$token. '.'
+                );
+            } elseif ($post->getToken() == $token) {
                 $post->setContent($content);
                 $post->save();
                 $msg = array(
