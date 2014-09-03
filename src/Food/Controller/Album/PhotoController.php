@@ -9,16 +9,6 @@ use Food\Model\Album\Album;
 class PhotoController extends Seed
 {
 
-    public function upload()
-    {
-        $loader = new \Twig_Loader_Filesystem(BASE_DIR . '/templates');
-        $twig = new \Twig_Environment($loader);
-        $result[0] = '';
-        echo $twig->render('upload.html', array(
-            'res' => $result
-        ));
-    }
-
     public function doupload($id)
     {
         if ($_FILES["file"]["error"] > 0) {
