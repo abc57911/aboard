@@ -166,9 +166,6 @@ class UserController extends Seed
      */
     public function editUser($name = null)
     {
-        //模擬PUT轉POST
-        parse_str(file_get_contents('php://input'), $_POST);
-
         $user;
         $email;
         $nick;
@@ -233,8 +230,6 @@ class UserController extends Seed
      */
     public function deleteUser($name = null)
     {
-        parse_str(file_get_contents('php://input'), $_DELETE);
-
         $user;
         $token = User::listByName($name);
 
