@@ -8,6 +8,10 @@ use Food\Controller\Guestbook\PostController;
 
 class ThreadController extends Seed
 {
+    /**
+     * listAll
+     * @return JSON {token:token, title:string, post:msg}
+     */
     public function index()
     {
         $thread = Thread::listAll();
@@ -25,24 +29,24 @@ class ThreadController extends Seed
         }
         return json_encode($msg);
     }
+    /**
+     * 查看標題
+     * @param  int $token 代碼
+     * @return JSON {success:bool, string:msg, or token:token, or title:string}
+     */
     public function view($token = null)
     {
         if (is_null($token)) {
             $msg = array(
-                'seccess' => false,
-                'string' => 'Error. Could not find insert value.'
+                'success' => false,
+                'string' => 'Error. Token is null.'
             );
         } else {
             $thread = Thread::load($token);
-            if (is_null($thread)) {
+            if ($thread instanceof Thread) {
                 $msg = array(
-                    'secess' => false,
-                    'string' => 'Error. Could not find token ' .$token. '.'
-                );
-            } elseif ($thread->getToken() == $token) {
-                $msg = array(
-                    'seccess' => true,
-                    'string' => 'Seccess. You can use thread to do something',
+                    'success' => true,
+                    'string' => 'Success. You can use thread to do something',
                     'token' => $thread->getToken(),
                     'title' => $thread->getTitle()
                 );
@@ -51,94 +55,109 @@ class ThreadController extends Seed
                 }
             } else {
                 $msg = array(
-                    'seccess' => false,
+                    'success' => false,
                     'string' => 'Error. Could not find token #' .$token. '.'
                 );
             }
         }
         return json_encode($msg);
     }
+    /**
+     * 新增標題
+     * @param  string $title 標題
+     * @return JSON {success:bool, string:msg, or token:token}
+     */
     public function create($title = null)
     {
-        if (is_null($title)) {
-            $msg = array(
-                'seccess' => false,
-                'string' => 'Error. Could not find insert value.'
-            );
-        } else {
+        $title_rule  = '/^.{1,128}$/';
+        $title  = htmlentities(trim($title), ENT_QUOTES, 'UTF-8');
+        if (preg_match($title_rule, $title)) {
             $thread = Thread::create($title);
-            if ($thread->getTitle() == $title) {
+            if ($thread instanceof Thread) {
                 $msg = array(
-                    'seccess' => true,
-                    'string' => 'Seccess added thread ' .$thread->getTitle(). '.',
+                    'success' => true,
+                    'string' => 'Success added thread ' .$thread->getTitle(). '.',
                     'token' => $thread->getToken()
                 );
             } else {
                 $msg = array(
-                    'seccess' => false,
+                    'success' => false,
                     'string' => 'Error. add thread ' .$title. ' failed. Please try again.'
                 );
             }
+        } else {
+            $msg = array(
+                'success' => false,
+                'string' => 'Error. Input string is not valid.'
+            );
         }
         return json_encode($msg);
     }
+    /**
+     * 刪除標題
+     * @param  int $token 代碼
+     * @return JSON {success:bool, string:msg}
+     */
     public function delete($token = null)
     {
         if (is_null($token)) {
             $msg = array(
-                'seccess' => false,
-                'string' => 'Error. Could not find insert value.'
+                'success' => false,
+                'string' => 'Error. Token is null.'
             );
         } else {
             $thread = Thread::load($token);
-            if (is_null($thread)) {
-                $msg = array(
-                    'secess' => false,
-                    'string' => 'Error. Could not find token ' .$token. '.'
-                );
-            } elseif ($thread->getToken() == $token) {
+            if ($thread instanceof Thread) {
                 $thread->delete();
                 $msg = array(
-                    'seccess' => true,
-                    'string' => 'Seccess deleted thread.'
+                    'success' => true,
+                    'string' => 'Success deleted thread.'
                 );
             } else {
                 $msg = array(
-                    'seccess' => false,
+                    'success' => false,
                     'string' => 'Error. Could not find token #' .$token. '.'
                 );
             }
         }
         return json_encode($msg);
     }
+    /**
+     * 修改標題
+     * @param  int $token 代碼
+     * @param  string $title 標題
+     * @return JSON {success:bool, string:msg, or token:token}
+     */
     public function edit($token = null, $title = null)
     {
-        if (is_null($token) || is_null($title)) {
+        $title_rule  = '/^.{1,128}$/';
+        $title  = htmlentities(trim($title), ENT_QUOTES, 'UTF-8');
+        if (is_null($token)) {
             $msg = array(
-                'seccess' => false,
-                'string' => 'Error. Could not find insert value.'
+                'success' => false,
+                'string' => 'Error. Token is null.'
             );
-        } else {
+        } elseif (preg_match($title_rule, $title)) {
             $thread = Thread::load($token);
-            if (is_null($thread)) {
-                $msg = array(
-                    'secess' => false,
-                    'string' => 'Error. Could not find token ' .$token. '.'
-                );
-            } elseif ($thread->getToken() == $token) {
+            if ($thread instanceof Thread) {
                 $thread->setTitle($title);
                 $thread->save();
                 $msg = array(
-                    'seccess' => true,
-                    'string' => 'Seccess updated thread.',
+                    'success' => true,
+                    'string' => 'Success updated thread.',
                     'token' =>$token
                 );
             } else {
                 $msg = array(
-                    'seccess' => false,
+                    'success' => false,
                     'string' => 'Error. Could not find token #' .$token. '.'
                 );
             }
+        } else {
+            $msg = array(
+                'success' => false,
+                'string' => 'Error. Input string is not valid.'
+            );
         }
         return json_encode($msg);
     }
