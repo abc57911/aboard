@@ -32,7 +32,7 @@ class PhotoController extends Seed
                 $end = [
                     "ending" => "upload ok"
                 ];
-                return json_encode($ending);
+                return json_encode($end);
                 exit();
             }
         }
@@ -42,14 +42,14 @@ class PhotoController extends Seed
                 $end = [
                 "ending" => "file type error!"
                     ];
-                return json_encode($ending);
+                return json_encode($end);
                 break;
             default:
                 $msg = "3";
                 $end = [
                 "ending" => "unknow error!"
                     ];
-                return json_encode($ending);
+                return json_encode($end);
                 break;
         }
     }
@@ -70,7 +70,7 @@ class PhotoController extends Seed
         $end = [
             "ending" => "edit okay"
         ];
-        return json_encode($ending);
+        return json_encode($end);
     }
 
     /**
@@ -85,7 +85,7 @@ class PhotoController extends Seed
         $end = [
             "ending" => "delete okay"
         ];
-        return json_encode($ending);
+        return json_encode($end);
     }
     /**
      * 取得照片
