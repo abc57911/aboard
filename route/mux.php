@@ -129,9 +129,19 @@ $mux->get('/users', ['Food\Controller\User\UserController', 'getAllUser']);
 $mux->post('/user/create', ['Food\Controller\User\UserController', 'addUser']);
 
 $mux->get(
-    '/user/:name',
+    '/user/byname/:name',
     ['Food\Controller\User\UserController', 'getUserByName'],
     ['require' => [ 'name' => '([a-z0-9]{8,16})']]
+);
+
+$mux->get(
+    '/user/byemail/:email',
+    ['Food\Controller\User\UserController', 'getUserByEmail']]
+);
+
+$mux->get(
+    '/user/bynick/:nick',
+    ['Food\Controller\User\UserController', 'getUserByNick']]
 );
 
 $mux->post(
