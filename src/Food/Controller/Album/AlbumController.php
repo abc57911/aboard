@@ -14,9 +14,9 @@ class AlbumController extends Seed
      *
      * @return JSON {
      *         [
-     *           Title:Title,
-     *           Description:Description,
-     *           Token:Token
+     *         Title:Title,
+     *         Description:Description,
+     *         Token:Token
      *         ];
      *         }
      */
@@ -36,15 +36,17 @@ class AlbumController extends Seed
 
     /**
      * 取得album($id)的所有照片資料
-     *@param string $id 相簿id
+     * 
+     * @param string $id
+     *            相簿id
      * @return JSON {
      *         [
-     *           Title:Title,
-     *           Description:Description,
-     *           Path:Path
+     *         Title:Title,
+     *         Description:Description,
+     *         Path:Path
      *         ];
      *         }
-     */   
+     */
     public function allphoto($id)
     {
         $album = Album::load($id);
@@ -62,16 +64,19 @@ class AlbumController extends Seed
 
     /**
      * 取得album新增完成後資料
-     * @param POST string title 相簿名
-     * @param POST string desc 相簿描述
+     * 
+     * @param
+     *            POST string title 相簿名
+     * @param
+     *            POST string desc 相簿描述
      * @return JSON {
      *         [
-     *           Title:Title,
-     *           Description:Description,
-     *           Token:Token
+     *         Title:Title,
+     *         Description:Description,
+     *         Token:Token
      *         ];
      *         }
-     */    
+     */
     public function create()
     {
         $t = $_POST["title"];
@@ -87,9 +92,13 @@ class AlbumController extends Seed
 
     /**
      * 取得編輯成功資訊
-     *@param string $id 相簿id
-     * @param POST string title 相簿名
-     * @param POST string desc 相簿描述
+     * 
+     * @param string $id
+     *            相簿id
+     * @param
+     *            POST string title 相簿名
+     * @param
+     *            POST string desc 相簿描述
      * @return JSON {'edit okay'}
      */
     public function edit($id)
@@ -108,7 +117,9 @@ class AlbumController extends Seed
 
     /**
      * 取得刪除成功資訊
-     *@param string $id 相簿id
+     * 
+     * @param string $id
+     *            相簿id
      * @return JSON {'delete okay'}
      */
     public function del($id)
