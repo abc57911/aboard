@@ -20,7 +20,7 @@ class AlbumLibrary extends Seed
      *         ];
      *         }
      */
-    public function index()
+    static public function allalbum()
     {
         $albums = Album::listAll();
         foreach ($albums as $a) {
@@ -46,7 +46,7 @@ class AlbumLibrary extends Seed
      *         ];
      *         }
      */
-    public function allphoto($id)
+    static public function allphoto($id)
     {
         $album = Album::load($id);
         $aaa = $album->listPhoto();
@@ -74,7 +74,7 @@ class AlbumLibrary extends Seed
      *         ];
      *         }
      */
-    public function create($title, $desc)
+    static public function create($title, $desc)
     {
         $t = $title;
         $d = $desc;
@@ -93,9 +93,9 @@ class AlbumLibrary extends Seed
      * @param string $id 相簿id
      * @param string title 相簿名
      * @param string desc 相簿描述
-     * @return array $end = {'edit okay'}
+     * @return array $end = [ending : 'edit okay']
      */
-    public function edit($id)
+    static public function edit($id)
     {
         $t = $_POST["title"];
         $d = $_POST["desc"];
@@ -113,9 +113,9 @@ class AlbumLibrary extends Seed
      * 取得刪除成功資訊
      * 
      * @param string $id  相簿id
-     * @return array $end = {'delete okay'}
+     * @return array $end = [ending : 'delete okay']
      */
-    public function del($id)
+    static public function del($id)
     {
         $album = Album::load($id);
         $aaa = $album->listPhoto();

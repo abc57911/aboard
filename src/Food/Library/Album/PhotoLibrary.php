@@ -14,9 +14,9 @@ class PhotoLibrary extends Seed
      *@param string $title 圖片名
      *@param string $desc 圖片描述
       *取得上傳成功資訊
-     *@return array $end = {'edit okay'or'file type error!'or'unknow error!'}
+     *@return array $end = [ending : 'edit okay'or'file type error!'or'unknow error!']
      */
-    public function doupload($id, $title, $desc)
+    static public function doupload($id, $title, $desc)
     {
         if ($_FILES["file"]["error"] > 0) {
             $msg = '1';
@@ -59,9 +59,9 @@ class PhotoLibrary extends Seed
      *@param string $id 圖片id
      *@param string $title 圖片名
      *@param string $desc 圖片描述
-     *@return array $end = {'edit okay'}
+     *@return array $end = [ending : 'edit okay']
      */
-    public function edit($id, $title, $desc)
+    static public function edit($id, $title, $desc)
     {
         $t = $title;
         $d = $desc;
@@ -78,9 +78,9 @@ class PhotoLibrary extends Seed
     /**
      * 取得刪除成功資訊
      *@param string $id 圖片id
-     *@return array $end = {'delete okay'}
+     *@return array $end = [ending : 'delete okay']
      */
-    public function del($id)
+    static public function del($id)
     {
         $photo = Photo::load($id);
         $photo->delete();
@@ -95,7 +95,7 @@ class PhotoLibrary extends Seed
      *@return 圖片
      */
 
-    public function show($id)
+    static public function show($id)
     {
         $photo = Photo::load($id);
         header('Content-Type: image/jpeg');
