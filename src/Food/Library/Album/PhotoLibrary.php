@@ -10,13 +10,17 @@ class PhotoLibrary extends Seed
 {
 
     /**
-     *@param string $id 相簿id
-     *@param string $title 圖片名
-     *@param string $desc 圖片描述
-      *取得上傳成功資訊
-     *@return array $end = [ending : 'edit okay'or'file type error!'or'unknow error!']
+     *
+     * @param string $id
+     *            相簿id
+     * @param string $title
+     *            圖片名
+     * @param string $desc
+     *            圖片描述
+     *            取得上傳成功資訊
+     * @return array $end = [ending => 'edit okay'or'file type error!'or'unknow error!']
      */
-    static public function doupload($id, $title, $desc)
+    public static function doupload($id, $title, $desc)
     {
         if ($_FILES["file"]["error"] > 0) {
             $msg = '1';
@@ -40,15 +44,15 @@ class PhotoLibrary extends Seed
             case "1":
             case "2":
                 $end = [
-                "ending" => "file type error!"
-                    ];
+                    "ending" => "file type error!"
+                ];
                 return $end;
                 break;
             default:
                 $msg = "3";
                 $end = [
-                "ending" => "unknow error!"
-                    ];
+                    "ending" => "unknow error!"
+                ];
                 return $end;
                 break;
         }
@@ -56,12 +60,16 @@ class PhotoLibrary extends Seed
 
     /**
      * 取得編輯成功資訊
-     *@param string $id 圖片id
-     *@param string $title 圖片名
-     *@param string $desc 圖片描述
-     *@return array $end = [ending : 'edit okay']
+     * 
+     * @param string $id
+     *            圖片id
+     * @param string $title
+     *            圖片名
+     * @param string $desc
+     *            圖片描述
+     * @return array $end = [ending => 'edit okay']
      */
-    static public function edit($id, $title, $desc)
+    public static function edit($id, $title, $desc)
     {
         $t = $title;
         $d = $desc;
@@ -77,10 +85,12 @@ class PhotoLibrary extends Seed
 
     /**
      * 取得刪除成功資訊
-     *@param string $id 圖片id
-     *@return array $end = [ending : 'delete okay']
+     * 
+     * @param string $id
+     *            圖片id
+     * @return array $end = [ending => 'delete okay']
      */
-    static public function del($id)
+    public static function del($id)
     {
         $photo = Photo::load($id);
         $photo->delete();
@@ -89,13 +99,15 @@ class PhotoLibrary extends Seed
         ];
         return $end;
     }
+
     /**
      * 取得照片
-     *@param string $id 圖片id
-     *@return 圖片
+     * 
+     * @param string $id
+     *            圖片id
+     * @return 圖片
      */
-
-    static public function show($id)
+    public static function show($id)
     {
         $photo = Photo::load($id);
         header('Content-Type: image/jpeg');
