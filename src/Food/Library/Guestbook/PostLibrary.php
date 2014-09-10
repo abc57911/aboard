@@ -1,24 +1,24 @@
 <?php
 
-namespace Food\Controller\Guestbook;
+namespace Food\Library\Guestbook;
 
 use Fruit\Seed;
 use Food\Model\Guestbook\Post;
 use Food\Model\Guestbook\Thread;
 
-class PostController extends Seed
+class PostLibrary extends Seed
 {
     /**
      * 查看內容
      * @param  int $token 代碼
-     * @return JSON {
-     *     success:bool,
-     *     string:msg,
-     *     or token:token,
-     *     or content:string,
-     *     or create_time:time,
-     *     or update_time:time
-     * }
+     * @return $msg = array(
+     *     success => bool,
+     *     string => msg,
+     *     token => token,
+     *     content => string,
+     *     create_time => time,
+     *     update_time => time
+     * )
      */
     public static function view($token = null)
     {
@@ -45,13 +45,17 @@ class PostController extends Seed
                 );
             }
         }
-        return json_encode($msg);
+        return $msg;
     }
     /** 
      * 新增內容
      * @param  int $tid 代碼
      * @param  string $content 內容
-     * @return JSON {success:bool, string:msg, or token:token}
+     * @return $msg = array(
+     *     success => bool,
+     *     string => msg,
+     *     token => token
+     * )
      */
     public function create($tid = null, $content = null)
     {
@@ -83,12 +87,15 @@ class PostController extends Seed
                 'string' => 'Error. Input string is not valid.'
             );
         }
-        return json_encode($msg);
+        return $msg;
     }
     /** 
      * 刪除內容
      * @param  int $token 代碼
-     * @return JSON {success:bool, string:msg}
+     * @return $msg = array(
+     *     success => bool,
+     *     string = >msg
+     * )
      */
     public function delete($token = null)
     {
@@ -112,13 +119,17 @@ class PostController extends Seed
                 );
             }
         }
-        return json_encode($msg);
+        return $msg;
     }
     /** 
      * 修改內容
      * @param  int $token 代碼
      * @param  string $content 內容
-     * @return JSON {success:bool, string:msg, or token:token}
+     * @return $msg = array(
+     *     success => bool,
+     *     string => msg,
+     *     token => token
+     * )
      */
     public function edit($token = null, $content = null)
     {
@@ -151,6 +162,6 @@ class PostController extends Seed
                 'string' => 'Error. Input string is not valid.'
             );
         }
-        return json_encode($msg);
+        return $msg;
     }
 }

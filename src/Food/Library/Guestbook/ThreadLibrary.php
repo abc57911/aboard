@@ -1,16 +1,22 @@
 <?php
 
-namespace Food\Controller\Guestbook;
+namespace Food\Library\Guestbook;
 
 use Fruit\Seed;
 use Food\Model\Guestbook\Thread;
 use Food\Library\Guestbook\PostLibrary;
 
-class ThreadController extends Seed
+class ThreadLibrary extends Seed
 {
     /**
      * listAll
-     * @return JSON {token:token, title:string, post:msg}
+     * @return $msg = array(
+     *    thread = array(
+     *        token => token,
+     *        title => string,
+     *        post => array()
+     *    )
+     *)
      */
     public function index()
     {
@@ -27,12 +33,20 @@ class ThreadController extends Seed
                 $msg['thread'][$t]['post'][$p] = PostLibrary::view($p);
             }
         }
-        return json_encode($msg);
+        return $msg;
     }
     /**
      * 查看標題
      * @param  int $token 代碼
-     * @return JSON {success:bool, string:msg, or token:token, or title:string}
+     * @return $msg = array(
+     *     thread => array(
+     *         success => bool,
+     *         string => msg,
+     *         token => token,
+     *         title => string
+     *         post => array()
+     *     )
+     * )
      */
     public function view($token = null)
     {
@@ -51,7 +65,7 @@ class ThreadController extends Seed
                     'title' => $thread->getTitle()
                 );
                 foreach ($thread->listPosts() as $p) {
-                    $msg['thread']['post'][$p] = json_decode(PostController::view($p));
+                    $msg['thread']['post'][$p] = PostLibrary::view($p);
                 }
             } else {
                 $msg = array(
@@ -60,12 +74,16 @@ class ThreadController extends Seed
                 );
             }
         }
-        return json_encode($msg);
+        return $msg;
     }
     /**
      * 新增標題
      * @param  string $title 標題
-     * @return JSON {success:bool, string:msg, or token:token}
+     * @return $msg = array(
+     *     success => bool,
+     *     string => msg,
+     *     token => token
+     * )
      */
     public function create($title = null)
     {
@@ -91,12 +109,15 @@ class ThreadController extends Seed
                 'string' => 'Error. Input string is not valid.'
             );
         }
-        return json_encode($msg);
+        return $msg;
     }
     /**
      * 刪除標題
      * @param  int $token 代碼
-     * @return JSON {success:bool, string:msg}
+     * @return $msg = array(
+     *     success => bool,
+     *     string => msg
+     * )
      */
     public function delete($token = null)
     {
@@ -120,13 +141,17 @@ class ThreadController extends Seed
                 );
             }
         }
-        return json_encode($msg);
+        return $msg;
     }
     /**
      * 修改標題
      * @param  int $token 代碼
      * @param  string $title 標題
-     * @return JSON {success:bool, string:msg, or token:token}
+     * @return $msg = array(
+     *     success => bool,
+     *     string => msg,
+     *     token => token
+     * )
      */
     public function edit($token = null, $title = null)
     {
@@ -159,6 +184,6 @@ class ThreadController extends Seed
                 'string' => 'Error. Input string is not valid.'
             );
         }
-        return json_encode($msg);
+        return $msg;
     }
 }
