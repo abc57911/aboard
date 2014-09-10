@@ -12,15 +12,14 @@ class AlbumLibrary extends Seed
     /**
      * 取得所有album資料
      *
-     * @return $allalbum {
+     * @return array $allalbum
      *         [
-     *         Title:Title,
-     *         Description:Description,
-     *         Token:Token
+     *         Title => Title,
+     *         Description => Description,
+     *         Token => Token
      *         ];
-     *         }
      */
-    static public function allalbum()
+    public static function allalbum()
     {
         $albums = Album::listAll();
         foreach ($albums as $a) {
@@ -36,17 +35,18 @@ class AlbumLibrary extends Seed
 
     /**
      * 取得album($id)的所有照片資料
-     * 
-     * @param string $id 相簿id
-     * @return $allphoto {
+     *
+     * @param string $id
+     *            相簿id
+     * @return array $allphoto
      *         [
-     *         Title:Title,
-     *         Description:Description,
-     *         Path:Path
+     *         Title => Title,
+     *         Description => Description,
+     *         Path => Path
      *         ];
-     *         }
+     *        
      */
-    static public function allphoto($id)
+    public static function allphoto($id)
     {
         $album = Album::load($id);
         $aaa = $album->listPhoto();
@@ -63,18 +63,19 @@ class AlbumLibrary extends Seed
 
     /**
      * 取得album新增完成後資料
-     * 
-     * @param string title 相簿名
-     * @param string desc 相簿描述
-     * @return $aaa {
+     *
+     * @param
+     *            string title 相簿名
+     * @param
+     *            string desc 相簿描述
+     * @return array $aaa
      *         [
-     *         Title:Title,
-     *         Description:Description,
-     *         Token:Token
+     *         Title => Title,
+     *         Description => Description,
+     *         Token => Token
      *         ];
-     *         }
      */
-    static public function create($title, $desc)
+    public static function create($title, $desc)
     {
         $t = $title;
         $d = $desc;
@@ -89,13 +90,16 @@ class AlbumLibrary extends Seed
 
     /**
      * 取得編輯成功資訊
-     * 
-     * @param string $id 相簿id
-     * @param string title 相簿名
-     * @param string desc 相簿描述
-     * @return array $end = [ending : 'edit okay']
+     *
+     * @param string $id
+     *            相簿id
+     * @param
+     *            string title 相簿名
+     * @param
+     *            string desc 相簿描述
+     * @return array $end = [ending => 'edit okay']
      */
-    static public function edit($id)
+    public static function edit($id)
     {
         $t = $_POST["title"];
         $d = $_POST["desc"];
@@ -111,11 +115,12 @@ class AlbumLibrary extends Seed
 
     /**
      * 取得刪除成功資訊
-     * 
-     * @param string $id  相簿id
-     * @return array $end = [ending : 'delete okay']
+     *
+     * @param string $id
+     *            相簿id
+     * @return array $end = [ending => 'delete okay']
      */
-    static public function del($id)
+    public static function del($id)
     {
         $album = Album::load($id);
         $aaa = $album->listPhoto();
