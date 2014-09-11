@@ -19,9 +19,9 @@ class PhotoLibrary extends Seed
      *            圖片描述
      *            取得上傳成功資訊
      * @return array $end = [
-     *         'Title' => Title,
-     *         'Description' => Description,
-     *         'Token' => Token
+     *         Title => Title,
+     *         Description => Description,
+     *         Token => Token
      *         ]
      *         or
      *         $end = [ending =>'file type error!'or'unknow error!']
@@ -148,13 +148,13 @@ class PhotoLibrary extends Seed
      *
      * @param string $id
      *            圖片id
-     * @return 圖片 or array $photomsg =
+     * @return array $photomsg =
      *         [
      *         Title => Title,
      *         Description => Description,
      *         Token => Token,
      *         Path => Path
-     *         ];
+     *         ]
      *         or array $end = [ending => 'no image']
      */
     public static function picmsg($id)

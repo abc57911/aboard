@@ -12,13 +12,12 @@ class AlbumLibrary extends Seed
     /**
      * 取得所有album資料
      *
-     * @return array $allalbum
-     *         [
-     *         Title => Title,
-     *         Description => Description,
-     *         Token => Token
-     *         ];
-     *         or array $end = [ending => 'no albums']
+    * @return array $allalbum 
+    *     [Token =>[ 
+    *         Title => Title,
+    *         Description => Description
+     *     ]];
+    *         or array $end = [ending => 'no albums']
      */
     public static function allalbum()
     {
@@ -28,8 +27,7 @@ class AlbumLibrary extends Seed
                 $album = Album::load($a);
                 $allalbum[$a] = [
                     'Title' => $album->getTitle(),
-                    'Description' => $album->getDescription(),
-                    'Token' => $album->getToken()
+                    'Description' => $album->getDescription()
                 ];
             }
             return $allalbum;
@@ -47,12 +45,11 @@ class AlbumLibrary extends Seed
      * @param string $id
      *            相簿id
      * @return array $allphoto
-     *         [
+     *     [Token =>[
      *         Title => Title,
      *         Description => Description,
-     *         Token => Token,
      *         Path => Path
-     *         ];
+     *     ]];
      *         or
      *         array $end = [ending => 'no album']
      */
@@ -66,7 +63,6 @@ class AlbumLibrary extends Seed
                 $allphoto[$a] = [
                     'Title' => $photo->getTitle(),
                     'Description' => $photo->getDescription(),
-                    'Token' => $photo->getToken(),
                     'Path' => 'aboard/photo/show/' . $photo->getToken()
                 ];
             }

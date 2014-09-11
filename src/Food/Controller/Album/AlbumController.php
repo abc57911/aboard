@@ -12,8 +12,7 @@ class AlbumController extends Seed
     /**
      * 取得所有album資料
      *
-     * @return JSON $allalbum = {Title : Title, Description : Description,
-     *         Token : Token}
+     * @return JSON $allalbum = {Token :{Title : Title, Description : Description}}
      *         or
      *         JSON $end = {ending : 'no album'}
      */
@@ -25,8 +24,7 @@ class AlbumController extends Seed
                 $album = Album::load($a);
                 $allalbum[$a] = [
                     'Title' => $album->getTitle(),
-                    'Description' => $album->getDescription(),
-                    'Token' => $album->getToken()
+                    'Description' => $album->getDescription()
                 ];
             }
             return json_encode($allalbum);
