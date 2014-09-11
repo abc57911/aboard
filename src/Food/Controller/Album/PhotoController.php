@@ -10,11 +10,20 @@ class PhotoController extends Seed
 {
 
     /**
-     * @param string $id 相簿id
-     * @param POST string title 圖片名
-     * @param POST string desc 圖片描述
-     * 取得上傳成功資訊
-     * @return JSON {ending:'edit okay'or'file type error!'or'unknow error!'}
+     *
+     * @param string $id
+     *            相簿id
+     * @param
+     *            POST string $title
+     *            圖片名
+     * @param
+     *            POST string $desc
+     *            圖片描述
+     *            取得上傳成功資訊
+     * @return JSON $end = {Title : Title, Description : Description,
+     *         Token : Token }
+     *         or
+     *         $end = {ending :'file type error!'or'unknow error!'}
      */
     public function doupload($id)
     {
@@ -30,7 +39,9 @@ class PhotoController extends Seed
                 $d = $_POST["desc"];
                 $photo = Photo::create($album, $_FILES["file"]["tmp_name"], $t, $d);
                 $end = [
-                    "ending" => "upload ok"
+                    'Title' => $photo->getTitle(),
+                    'Description' => $photo->getDescription(),
+                    'Token' => $photo->getToken()
                 ];
                 return json_encode($end);
                 exit();
@@ -40,15 +51,15 @@ class PhotoController extends Seed
             case "1":
             case "2":
                 $end = [
-                "ending" => "file type error!"
-                    ];
+                    "ending" => "file type error!"
+                ];
                 return json_encode($end);
                 break;
             default:
                 $msg = "3";
                 $end = [
-                "ending" => "unknow error!"
-                    ];
+                    "ending" => "unknow error!"
+                ];
                 return json_encode($end);
                 break;
         }
@@ -56,47 +67,80 @@ class PhotoController extends Seed
 
     /**
      * 取得編輯成功資訊
-     *@param string $id 圖片id
-     * @return JSON {ending:'edit okay'}
+     *
+     * @param string $id
+     *            圖片id
+     * @param
+     *            POST string $title
+     *            圖片名
+     * @param
+     *            POST string $desc
+     *            圖片描述
+     * @return JSON $end = {ending : 'edit okay' or 'edit error'}
      */
     public function edit($id)
     {
         $t = $_POST["title"];
         $d = $_POST["desc"];
         $photo = Photo::load($id);
-        $photo->setTitle($t);
-        $photo->setDescription($d);
-        $photo->save();
-        $end = [
-            "ending" => "edit okay"
-        ];
-        return json_encode($end);
+        if ($photo != null) {
+            $photo->setTitle($t);
+            $photo->setDescription($d);
+            $photo->save();
+            $end = [
+                "ending" => "edit okay"
+            ];
+            return json_encode($end);
+        } else {
+            $end = [
+                "ending" => "edit error"
+            ];
+            return json_encode($end);
+        }
     }
 
     /**
      * 取得刪除成功資訊
-     *@param string $id 圖片id
-     * @return JSON {ending:'delete okay'}
+     *
+     * @param string $id
+     *            圖片id
+     * @return JSON $end = {ending : 'delete okay' or 'delete error' }
      */
     public function del($id)
     {
         $photo = Photo::load($id);
-        $photo->delete();
-        $end = [
-            "ending" => "delete okay"
-        ];
-        return json_encode($end);
+        if ($photo != null) {
+            $photo->delete();
+            $end = [
+                "ending" => "delete okay"
+            ];
+            return json_encode($end);
+        } else {
+            $end = [
+                "ending" => "delete error"
+            ];
+            return json_encode($end);
+        }
     }
+
     /**
      * 取得照片
-     *@param string $id 圖片id
-     * @return 圖片
+     *
+     * @param string $id
+     *            圖片id
+     * @return 圖片 or JSON $end = {ending : 'no image'}
      */
-
     public function show($id)
     {
         $photo = Photo::load($id);
-        header('Content-Type: image/jpeg');
-        $photo->readFile();
+        if ($photo != null) {
+            header('Content-Type: image/jpeg');
+            $photo->readFile();
+        } else {
+            $end = [
+                "ending" => "no image"
+            ];
+            return json_encode($end);
+        }
     }
 }
