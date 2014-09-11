@@ -10,7 +10,14 @@ class ThreadController extends Seed
 {
     /**
      * listAll
-     * @return JSON {token:token, title:string, post:msg}
+     * @return JSON { 'thread':
+     *     { token(thread):
+     *         { 'token':token, 'title':string, 'post':
+     *             { toekn(post):{...}
+     *             }
+     *         }
+     *     }
+     * }
      */
     public function index()
     {
@@ -32,7 +39,12 @@ class ThreadController extends Seed
     /**
      * 查看標題
      * @param  int $token 代碼
-     * @return JSON {success:bool, string:msg, or token:token, or title:string}
+     * @return JSON { 'thread':
+     *     { 'success':bool, 'string':msg, 'token':token, 'title':string, 'post':
+     *         { token(post):{...}
+     *         }
+     *     }
+     * }
      */
     public function view($token = null)
     {
@@ -51,7 +63,7 @@ class ThreadController extends Seed
                     'title' => $thread->getTitle()
                 );
                 foreach ($thread->listPosts() as $p) {
-                    $msg['thread']['post'][$p] = json_decode(PostController::view($p));
+                    $msg['thread']['post'][$p] = PostLibrary::view($p);
                 }
             } else {
                 $msg = array(
@@ -65,7 +77,11 @@ class ThreadController extends Seed
     /**
      * 新增標題
      * @param  string $title 標題
-     * @return JSON {success:bool, string:msg, or token:token}
+     * @return JSON {
+     *     'success':bool,
+     *     'string':msg,
+     *     'token':token
+     * }
      */
     public function create($title = null)
     {
@@ -96,7 +112,7 @@ class ThreadController extends Seed
     /**
      * 刪除標題
      * @param  int $token 代碼
-     * @return JSON {success:bool, string:msg}
+     * @return JSON { 'success':bool, 'string':msg}
      */
     public function delete($token = null)
     {
@@ -126,7 +142,7 @@ class ThreadController extends Seed
      * 修改標題
      * @param  int $token 代碼
      * @param  string $title 標題
-     * @return JSON {success:bool, string:msg, or token:token}
+     * @return JSON { 'success':bool, 'string':msg, 'token':token}
      */
     public function edit($token = null, $title = null)
     {

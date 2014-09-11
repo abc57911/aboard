@@ -10,13 +10,17 @@ class ThreadLibrary extends Seed
 {
     /**
      * listAll
-     * @return $msg = array(
-     *    thread = array(
-     *        token => token,
-     *        title => string,
-     *        post => array()
-     *    )
-     *)
+     * @return array(
+     *     thread => array(
+     *         token(thread) => array(
+     *             'token' => token,
+     *             'title' => string,
+     *             'post' => array(
+     *                 token(post) => array(...)
+     *             )
+     *         )
+     *      )
+     * )
      */
     public function index()
     {
@@ -38,13 +42,15 @@ class ThreadLibrary extends Seed
     /**
      * 查看標題
      * @param  int $token 代碼
-     * @return $msg = array(
+     * @return array(
      *     thread => array(
-     *         success => bool,
-     *         string => msg,
-     *         token => token,
-     *         title => string
-     *         post => array()
+     *         'success' => bool,
+     *         'string' => msg,
+     *         'token' => token,
+     *         'title' => string,
+     *         'post' => array(
+     *             'token'(post) => array(...)
+     *         )
      *     )
      * )
      */
@@ -79,10 +85,10 @@ class ThreadLibrary extends Seed
     /**
      * 新增標題
      * @param  string $title 標題
-     * @return $msg = array(
-     *     success => bool,
-     *     string => msg,
-     *     token => token
+     * @return array(
+     *     'success' => bool,
+     *     'string' => msg,
+     *     'token' => token
      * )
      */
     public function create($title = null)
@@ -114,9 +120,9 @@ class ThreadLibrary extends Seed
     /**
      * 刪除標題
      * @param  int $token 代碼
-     * @return $msg = array(
-     *     success => bool,
-     *     string => msg
+     * @return array(
+     *     'success' => bool,
+     *     'string' => msg
      * )
      */
     public function delete($token = null)
@@ -147,10 +153,10 @@ class ThreadLibrary extends Seed
      * 修改標題
      * @param  int $token 代碼
      * @param  string $title 標題
-     * @return $msg = array(
-     *     success => bool,
-     *     string => msg,
-     *     token => token
+     * @return array(
+     *     'success' => bool,
+     *     'string' => msg,
+     *     'token' => token
      * )
      */
     public function edit($token = null, $title = null)

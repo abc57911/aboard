@@ -136,12 +136,12 @@ $mux->get(
 
 $mux->get(
     '/user/byemail/:email',
-    ['Food\Controller\User\UserController', 'getUserByEmail']]
+    ['Food\Controller\User\UserController', 'getUserByEmail']
 );
 
 $mux->get(
     '/user/bynick/:nick',
-    ['Food\Controller\User\UserController', 'getUserByNick']]
+    ['Food\Controller\User\UserController', 'getUserByNick']
 );
 
 $mux->post(
@@ -157,7 +157,7 @@ $mux->post(
 );
 
 // owen
-$mux->get('/album/index', [
+$mux->get('/album', [
     'Food\Controller\Album\AlbumController',
     'index'
 ]);
@@ -165,15 +165,15 @@ $mux->get('/album/allphoto/:id', [
     'Food\Controller\Album\AlbumController',
     'allphoto'
 ]);
-$mux->get('/album/create', [
+$mux->post('/album/create', [
     'Food\Controller\Album\AlbumController',
     'create'
 ]);
-$mux->get('/album/edit/:id', [
+$mux->post('/album/edit/:id', [
     'Food\Controller\Album\AlbumController',
     'edit'
 ]);
-$mux->get('/album/del/:id', [
+$mux->post('/album/del/:id', [
     'Food\Controller\Album\AlbumController',
     'del'
 ]);
@@ -181,11 +181,11 @@ $mux->any('/photo/doupload/:id', [
     'Food\Controller\Album\PhotoController',
     'doupload'
 ]);
-$mux->get('/photo/edit/:id', [
+$mux->post('/photo/edit/:id', [
     'Food\Controller\Album\PhotoController',
     'edit'
 ]);
-$mux->get('/photo/del/:id', [
+$mux->post('/photo/del/:id', [
     'Food\Controller\Album\PhotoController',
     'del'
 ]);

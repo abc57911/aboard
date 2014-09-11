@@ -11,13 +11,13 @@ class PostLibrary extends Seed
     /**
      * 查看內容
      * @param  int $token 代碼
-     * @return $msg = array(
-     *     success => bool,
-     *     string => msg,
-     *     token => token,
-     *     content => string,
-     *     create_time => time,
-     *     update_time => time
+     * @return array(
+     *     'success' => bool,
+     *     'string' => msg,
+     *     'token' => token,
+     *     'content' => string,
+     *     'create_time' => time,
+     *     'update_time' => time
      * )
      */
     public static function view($token = null)
@@ -51,10 +51,10 @@ class PostLibrary extends Seed
      * 新增內容
      * @param  int $tid 代碼
      * @param  string $content 內容
-     * @return $msg = array(
-     *     success => bool,
-     *     string => msg,
-     *     token => token
+     * @return array(
+     *     'success' => bool,
+     *     'string' => msg,
+     *     'token' => token
      * )
      */
     public function create($tid = null, $content = null)
@@ -92,9 +92,9 @@ class PostLibrary extends Seed
     /** 
      * 刪除內容
      * @param  int $token 代碼
-     * @return $msg = array(
-     *     success => bool,
-     *     string = >msg
+     * @return array(
+     *     'success' => bool,
+     *     'string' = >msg
      * )
      */
     public function delete($token = null)
@@ -125,10 +125,10 @@ class PostLibrary extends Seed
      * 修改內容
      * @param  int $token 代碼
      * @param  string $content 內容
-     * @return $msg = array(
-     *     success => bool,
-     *     string => msg,
-     *     token => token
+     * @return array(
+     *     'success' => bool,
+     *     'string' => msg,
+     *     'token' => token
      * )
      */
     public function edit($token = null, $content = null)
