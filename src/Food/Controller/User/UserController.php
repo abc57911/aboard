@@ -22,14 +22,14 @@ class UserController extends Seed
     //==================================
     /**取得所有user資料
      * @return JSON {
-            users:user{
-                name:name,
-                nickname:nickname,
-                email:email,
-                createtime:createtime,
-                updatetime:updatetime
-            }
+        users:user{
+            name:name,
+            nick:nick,
+            email:email,
+            createtime:createtime,
+            updatetime:updatetime
         }
+    }
      */
     public function getAllUser()
     {
@@ -59,7 +59,16 @@ class UserController extends Seed
     //==================================
     /**依據使用者名稱取得資料
      * @param string $name 使用者帳號
-     * @return JSON user{name:name, nickname:nickname, email:email, createtime:createtime, updatetime:updatetime}
+     * @return JSON user{
+        name:name,
+        nick:nick,
+        email:email,
+        createtime:createtime,
+        updatetime:updatetime
+    } or JSON {
+        status:false,
+        msg:string(訊息)
+    }
      */
     public function getUserByName($name = null)
     {
@@ -91,14 +100,17 @@ class UserController extends Seed
     /**依據使用者Email取得資料
      * @param string $email 使用者Email
      * @return JSON {
-            users:user{
-                name:name,
-                nickname:nickname,
-                email:email,
-                createtime:createtime,
-                updatetime:updatetime
-            }
+        users:user{
+            name:name,
+            nick:nick,
+            email:email,
+            createtime:createtime,
+            updatetime:updatetime
         }
+    }  or JSON {
+        status:false,
+        msg:string(訊息)
+    }
      */
     public function getUserByEmail($email = null)
     {
@@ -134,14 +146,17 @@ class UserController extends Seed
     /**依據使用者Nick取得資料
      * @param string $email 使用者Nick
      * @return JSON {
-            users:user{
-                name:name,
-                nickname:nickname,
-                email:email,
-                createtime:createtime,
-                updatetime:updatetime
-            }
+        users:user{
+            name:name,
+            nick:nick,
+            email:email,
+            createtime:createtime,
+            updatetime:updatetime
         }
+    } or JSON {
+        status:false,
+        msg:string(訊息)
+    }
      */
     public function getUserByNick($nick = null)
     {

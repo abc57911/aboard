@@ -11,7 +11,7 @@ class UserLibrary extends Seed
         array(
             'token'      => token,
             'name'       => name,
-            'nickname'   => nickname,
+            'nick'       => nick,
             'email'      => email,
             'createtime' => createtime,
             'updatetime' => updatetime
@@ -45,10 +45,13 @@ class UserLibrary extends Seed
      * @return array(
         'token'      => token,
         'name'       => name,
-        'nickname'   => nickname,
+        'nick'       => nick,
         'email'      => email,
         'createtime' => createtime,
         'updatetime' => updatetime
+    ) or array(
+        'status' => false,
+        'msg'    => string(訊息)
     )
      */
     public function getUserByToken($token = null)
@@ -78,11 +81,14 @@ class UserLibrary extends Seed
         array(
             'token'      => token,
             'name'       => name,
-            'nickname'   => nickname,
+            'nick'       => nick,
             'email'      => email,
             'createtime' => createtime,
             'updatetime' => updatetime
         )...
+    ) or array(
+        'status' => false,
+        'msg'    => string(訊息)
     )
      */
     public function getUserByName($name = null)
@@ -129,11 +135,14 @@ class UserLibrary extends Seed
         array(
             'token'      => token,
             'name'       => name,
-            'nickname'   => nickname,
+            'nick'       => nick,
             'email'      => email,
             'createtime' => createtime,
             'updatetime' => updatetime
         )...
+    ) or array(
+        'status' => false,
+        'msg'    => string(訊息)
     )
      */
     public function getUserByEmail($email = null)
@@ -180,11 +189,14 @@ class UserLibrary extends Seed
         array(
             'token'      => token,
             'name'       => name,
-            'nickname'   => nickname,
+            'nick'       => nick,
             'email'      => email,
             'createtime' => createtime,
             'updatetime' => updatetime
         )...
+    ) or array(
+        'status' => false,
+        'msg'    => string(訊息)
     )
      */
     public function getUserByNick($nick = null)
@@ -242,6 +254,8 @@ class UserLibrary extends Seed
         $pass  = $this->validatorFilterInput($pass, '/^([0-9a-z]{8,16})$/');
         $nick  = $this->validatorFilterInput($nick, '/^([\x7f-\xff]{6,24})$/');
         $email = $this->validatorFilterInput($email, '/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/');
+        $tmp_tokens;
+        $tmp_user;
 
         if (!$name or !$pass or !$nick or !$email) {
             return array(
@@ -250,11 +264,17 @@ class UserLibrary extends Seed
             );
         }
 
-        if (User::listByName($name)) {
-            return array(
-                'status' => false,
-                'msg'    => '帳號已經被使用'
-            );
+        if ($tmp_tokens = User::listByName($name)) {
+            foreach ($tmp_tokens as $key => $value) {
+                $tmp_user = User::load($value);
+
+                if ($tmp_user->getName() === $name) {
+                    return array(
+                        'status' => false,
+                        'msg'    => '帳號已經被使用'
+                    );
+                }
+            }
         }
 
         $user = User::create($name, $email, $nick, $pass);
@@ -273,12 +293,12 @@ class UserLibrary extends Seed
 
     /**修改使用者
      * @param int $token 使用者token
-     * @param string $password 使用者密碼 (字數長度最少8最多16只限小寫英文+數字)
-     * @param string $nickname 使用者暱稱 (長度最少2最多8只限中文)
+     * @param string $pass 使用者密碼 (字數長度最少8最多16只限小寫英文+數字)
+     * @param string $nick 使用者暱稱 (長度最少2最多8只限中文)
      * @param string $email 使用者信箱 (email格式)
      * @return array(
         'token'  => token,
-        'status' => bool(是修改成功),
+        'status' => bool(是否修改成功),
         'msg'    => string(訊息)
     )
      */
@@ -318,7 +338,7 @@ class UserLibrary extends Seed
     /**刪除使用者
      * @param int $token 使用者token
      * @return array(
-        'status' => bool(是刪除改成功),
+        'status' => bool(是否刪除改成功),
         'msg' => string(訊息)
     )
      */
@@ -340,6 +360,39 @@ class UserLibrary extends Seed
             'msg'    => '刪除成功'
         );
     }
+
+    /**驗證密碼
+     * @param int $token 使用者token
+     * @param string $pass 使用者密碼
+     * @return array(
+        'status' => bool(是否正確),
+        'msg' => string(訊息)
+    )
+     */
+    public function validatePassword($token = null, $pass = null)
+    {
+        $user  = User::load($token);
+
+        if (!$user instanceof User) {
+            return array(
+                'status' => false,
+                'msg'    => '查無使用者'
+            );
+        }
+
+        if (!$user->validatePassword($pass)) {
+            return array(
+                'status' => false,
+                'msg'    => '密碼錯誤'
+            );
+        }
+
+        return array(
+            'status' => true,
+            'msg'    => '密碼正確'
+        );
+    }
+
 
     /**過濾驗證
      * @param string $input
