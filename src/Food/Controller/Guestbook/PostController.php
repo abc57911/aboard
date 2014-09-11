@@ -12,12 +12,12 @@ class PostController extends Seed
      * 查看內容
      * @param  int $token 代碼
      * @return JSON {
-     *     success:bool,
-     *     string:msg,
-     *     or token:token,
-     *     or content:string,
-     *     or create_time:time,
-     *     or update_time:time
+     *     'success':bool,
+     *     'string':msg,
+     *     'token':token,
+     *     'content':string,
+     *     'create_time':time,
+     *     'update_time':time
      * }
      */
     public static function view($token = null)
@@ -51,7 +51,7 @@ class PostController extends Seed
      * 新增內容
      * @param  int $tid 代碼
      * @param  string $content 內容
-     * @return JSON {success:bool, string:msg, or token:token}
+     * @return JSON { 'success':bool, 'string':msg, 'token':token}
      */
     public function create($tid = null, $content = null)
     {
@@ -88,7 +88,7 @@ class PostController extends Seed
     /** 
      * 刪除內容
      * @param  int $token 代碼
-     * @return JSON {success:bool, string:msg}
+     * @return JSON { 'success':bool, 'string':msg}
      */
     public function delete($token = null)
     {
@@ -118,7 +118,7 @@ class PostController extends Seed
      * 修改內容
      * @param  int $token 代碼
      * @param  string $content 內容
-     * @return JSON {success:bool, string:msg, or token:token}
+     * @return JSON { 'success':bool, 'string':msg, 'token':token }
      */
     public function edit($token = null, $content = null)
     {
