@@ -1,13 +1,12 @@
 <?php
 namespace Food\Controller\User;
 
-use DateTimeZone;
-use Fruit\Seed;
 use Food\Model\User\User;
+use Fruit\Seed;
 
 use Fruit\ToolKit\Input;
-use Fruit\ToolKit\Validator\RegexpRule;
 use Fruit\ToolKit\Validator\EmailRule;
+use Fruit\ToolKit\Validator\RegexpRule;
 
 class UserController extends Seed
 {
@@ -22,18 +21,18 @@ class UserController extends Seed
     //==================================
     /**取得所有user資料
      * @return JSON {
-        users:user{
-            name:name,
-            nick:nick,
-            email:email,
-            createtime:createtime,
-            updatetime:updatetime
-        }
+    users:user{
+    name:name,
+    nick:nick,
+    email:email,
+    createtime:createtime,
+    updatetime:updatetime
+    }
     }
      */
     public function getAllUser()
     {
-        $users  = array();
+        $users = array();
         $user;
         $tokens = User::listAll();
 
@@ -60,14 +59,14 @@ class UserController extends Seed
     /**依據使用者名稱取得資料
      * @param string $name 使用者帳號
      * @return JSON user{
-        name:name,
-        nick:nick,
-        email:email,
-        createtime:createtime,
-        updatetime:updatetime
+    name:name,
+    nick:nick,
+    email:email,
+    createtime:createtime,
+    updatetime:updatetime
     } or JSON {
-        status:false,
-        msg:string(訊息)
+    status:false,
+    msg:string(訊息)
     }
      */
     public function getUserByName($name = null)
@@ -79,7 +78,7 @@ class UserController extends Seed
             return json_encode(
                 array(
                     'status' => false,
-                    'msg'    => '查無使用者'
+                    'msg'    => '查無使用者',
                 )
             );
         }
@@ -100,16 +99,16 @@ class UserController extends Seed
     /**依據使用者Email取得資料
      * @param string $email 使用者Email
      * @return JSON {
-        users:user{
-            name:name,
-            nick:nick,
-            email:email,
-            createtime:createtime,
-            updatetime:updatetime
-        }
+    users:user{
+    name:name,
+    nick:nick,
+    email:email,
+    createtime:createtime,
+    updatetime:updatetime
+    }
     }  or JSON {
-        status:false,
-        msg:string(訊息)
+    status:false,
+    msg:string(訊息)
     }
      */
     public function getUserByEmail($email = null)
@@ -118,12 +117,11 @@ class UserController extends Seed
         $users  = array();
         $tokens = User::listByEmail($email);
 
-
         if (!$tokens) {
             return json_encode(
                 array(
                     'status' => false,
-                    'msg'    => '查無使用者'
+                    'msg'    => '查無使用者',
                 )
             );
         }
@@ -146,16 +144,16 @@ class UserController extends Seed
     /**依據使用者Nick取得資料
      * @param string $email 使用者Nick
      * @return JSON {
-        users:user{
-            name:name,
-            nick:nick,
-            email:email,
-            createtime:createtime,
-            updatetime:updatetime
-        }
+    users:user{
+    name:name,
+    nick:nick,
+    email:email,
+    createtime:createtime,
+    updatetime:updatetime
+    }
     } or JSON {
-        status:false,
-        msg:string(訊息)
+    status:false,
+    msg:string(訊息)
     }
      */
     public function getUserByNick($nick = null)
@@ -164,12 +162,11 @@ class UserController extends Seed
         $users  = array();
         $tokens = User::listByNick($nick);
 
-
         if (!$tokens) {
             return json_encode(
                 array(
                     'status' => false,
-                    'msg'    => '查無使用者'
+                    'msg'    => '查無使用者',
                 )
             );
         }
@@ -222,7 +219,7 @@ class UserController extends Seed
             return json_encode(
                 array(
                     'status' => false,
-                    'msg'    => '資料格式錯誤'
+                    'msg'    => '資料格式錯誤',
                 )
             );
         }
@@ -236,7 +233,7 @@ class UserController extends Seed
             return json_encode(
                 array(
                     'status' => false,
-                    'msg'    => '帳號已經被使用'
+                    'msg'    => '帳號已經被使用',
                 )
             );
         }
@@ -247,7 +244,7 @@ class UserController extends Seed
             return json_encode(
                 array(
                     'status' => true,
-                    'msg'    => '新增成功'
+                    'msg'    => '新增成功',
                 )
             );
         }
@@ -280,12 +277,11 @@ class UserController extends Seed
             ->add($nick_rule, 'nick', Input::POST)
             ->add($pass_rule, 'pass', Input::POST);
 
-
         if ($input->check() !== true) {
             return json_encode(
                 array(
                     'status' => false,
-                    'msg'    => '資料格式錯誤'
+                    'msg'    => '資料格式錯誤',
                 )
             );
         }
@@ -296,7 +292,7 @@ class UserController extends Seed
             return json_encode(
                 array(
                     'status' => false,
-                    'msg'    => '查無使用者'
+                    'msg'    => '查無使用者',
                 )
             );
         }
@@ -314,11 +310,10 @@ class UserController extends Seed
         return json_encode(
             array(
                 'status' => true,
-                'msg'    => '修改成功'
+                'msg'    => '修改成功',
             )
         );
     }
-
 
     //==================================
     //單純的刪除使用。
@@ -336,7 +331,7 @@ class UserController extends Seed
             return json_encode(
                 array(
                     'status' => false,
-                    'msg'    => '查無使用者'
+                    'msg'    => '查無使用者',
                 )
             );
         }
@@ -348,7 +343,7 @@ class UserController extends Seed
         return json_encode(
             array(
                 'status' => true,
-                'msg'    => '刪除成功'
+                'msg'    => '刪除成功',
             )
         );
     }

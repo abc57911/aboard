@@ -10,6 +10,7 @@
   <testsuite name="Guestbook">
     <file>test/FoodTest/Model/Guestbook/ThreadTest.php</file>
     <file>test/FoodTest/Model/Guestbook/PostTest.php</file>
+    <file>test/FoodTest/Model/Guestbook/PostPlugTest.php</file>
   </testsuite>
   <testsuite name="Album">
     <file>test/FoodTest/Model/Album/AlbumTest.php</file>
