@@ -3,18 +3,18 @@
 namespace FoodTest\Model\Guestbook;
 
 use DateTime;
-use PHPUnit_Extensions_Database_TestCase;
 use FoodTest\DataSet;
 use FoodTest\Tool;
-use Food\Model\Guestbook\Thread;
 use Food\Model\Guestbook\Post;
+use Food\Model\Guestbook\Thread;
+use PHPUnit_Extensions_Database_TestCase;
 
 class PostTest extends PHPUnit_Extensions_Database_TestCase
 {
 
-    const CONTENT = 'content';
+    const CONTENT  = 'content';
     const CONTENT2 = 'content2';
-    const CREATE = 86400;
+    const CREATE   = 86400;
 
     public function getConnection()
     {
@@ -31,18 +31,18 @@ class PostTest extends PHPUnit_Extensions_Database_TestCase
                 ],
                 'post' => [
                     [
-                        'id' => 1,
-                        'content' => self::CONTENT,
+                        'id'          => 1,
+                        'content'     => self::CONTENT,
                         'create_time' => $d->format('Y-m-d H:i:s'),
                         'update_time' => null,
-                        'tid' => 1
+                        'tid'         => 1
                     ],
                     [
-                        'id' => 2,
-                        'content' => self::CONTENT,
+                        'id'          => 2,
+                        'content'     => self::CONTENT,
                         'create_time' => $d->format('Y-m-d H:i:s'),
                         'update_time' => null,
-                        'tid' => 1
+                        'tid'         => 1
                     ]
                 ]
             ]
@@ -60,11 +60,11 @@ class PostTest extends PHPUnit_Extensions_Database_TestCase
                 ],
                 'post' => [
                     [
-                        'id' => 1,
-                        'content' => self::CONTENT2,
+                        'id'          => 1,
+                        'content'     => self::CONTENT2,
                         'create_time' => $d->format('Y-m-d H:i:s'),
                         'update_time' => $u->format('Y-m-d H:i:s'),
-                        'tid' => 1
+                        'tid'         => 1
                     ]
                 ]
             ]

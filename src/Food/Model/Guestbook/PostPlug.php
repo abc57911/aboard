@@ -26,6 +26,31 @@ class PostPlug extends Seed
     }
 
     /**
+     * 建立相簿
+     *
+     * @param string $title title
+     * @param string $desc description or null
+     * @return Album object or null
+     */
+    public static function albumCreate($title, $desc = null)
+    {
+        $db = self::getConfig()->getDb();
+        $sql = 'INSERT INTO album (id, title, description) VALUES (?,?,?)';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(1, 99999);
+        $stmt->bindValue(2, 'Post album');
+        $stmt->bindValue(3, 'Save post photo');
+
+        if ($stmt->execute()) {
+            $id = $db->lastInsertId();
+            $stmt->closeCursor();
+        }
+        $stmt->closeCursor();
+        return null;
+    }
+
+    /**
      * 新增留言圖片
      *
      * @param Photo $Photo_obj object
@@ -144,6 +169,11 @@ class PostPlug extends Seed
     public function getPhotoId()
     {
         return $this->PhotoID;
+    }
+
+    public function getPostID()
+    {
+        return $this->PostID;
     }
 
     /**
