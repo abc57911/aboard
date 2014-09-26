@@ -26,7 +26,7 @@ class PostPlug extends Seed
     }
 
     /**
-     * 建立相簿
+     * 建立預設留言板相簿
      *
      * @param string $title title
      * @param string $desc description or null
@@ -62,8 +62,8 @@ class PostPlug extends Seed
         $db   = self::getConfig()->getDb();
         $sql  = 'INSERT INTO post_plug (post_id, photo_id) VALUES (?, ?)';
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(1, $Photo_obj->getToken());
-        $stmt->bindValue(2, $Post_obj->getToken());
+        $stmt->bindValue(1, $Post_obj->getToken());
+        $stmt->bindValue(2, $Photo_obj->getToken());
 
         if ($stmt->execute()) {
             $id = $db->lastInsertId();
@@ -101,22 +101,38 @@ class PostPlug extends Seed
         }
 
         return null;
-
     }
 
     /**
-     * 設定圖片ID
+     * 依據post取得留言圖片
      *
-     * @param Photo $Photo_obj object
+     * @param post object
+     * @return PostPlug object or null
      */
-    public function setPhoto(Photo $Photo_obj)
+    public static function loadByPost(Post $post)
     {
-        $this->photo_obj_cache = $Photo_obj;
-        $this->PhotoID         = $Photo_obj->getToken();
+        $db  = self::getConfig()->getDb();
+        $sql = 'SELECT id, post_id, photo_id FROM post_plug WHERE post_id = ?';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(1, $post->getToken());
+
+        if (!$stmt->execute()) {
+            return null;
+        }
+
+        $res = $stmt->fetch(PDO::FETCH_NUM);
+        $stmt->closeCursor();
+
+        if ($res != null) {
+            return new self($res[0], $res[1], $res[2]);
+        }
+
+        return null;
     }
 
     /**
-     * 刪除該筆資料（留言與圖片）
+     * 刪除留言的圖片
      */
     public function delete()
     {
@@ -134,19 +150,30 @@ class PostPlug extends Seed
     }
 
     /**
+     * 設定圖片ID
+     *
+     * @param Photo $Photo_obj photo's id
+     */
+    public function setPhoto($Photo)
+    {
+        $this->PhotoID = $Photo;
+    }
+
+    /**
      * 儲存
      */
     public function save()
     {
+        // var_dump($this->id);
+        // exit();
         $db  = self::getConfig()->getDb();
         $sql = 'UPDATE post_plug SET ';
-        $sql .= 'post_id = ?, photo_id = ? ';
-        $sql .= 'WHERE id = ?';
+        $sql .= 'photo_id = ? ';
+        $sql .= 'WHERE post_id = ?';
 
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(1, $this->PostID);
-        $stmt->bindValue(2, $this->PhotoID);
-        $stmt->bindValue(3, $this->id);
+        $stmt->bindValue(1, $this->PhotoID);
+        $stmt->bindValue(2, $this->PostID);
         $stmt->execute();
         $stmt->closeCursor();
     }
@@ -166,7 +193,7 @@ class PostPlug extends Seed
      *
      * @return string PhotoID
      */
-    public function getPhotoId()
+    public function getPhotoID()
     {
         return $this->PhotoID;
     }
