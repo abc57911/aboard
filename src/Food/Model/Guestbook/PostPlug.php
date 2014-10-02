@@ -2,6 +2,7 @@
 
 namespace Food\Model\Guestbook;
 
+use Food\Model\Album\Album;
 use Food\Model\Album\Photo;
 use Food\Model\Guestbook\Post;
 use Fruit\Seed;
@@ -32,7 +33,7 @@ class PostPlug extends Seed
      * @param string $desc description or null
      * @return Album object or null
      */
-    public static function albumCreate($title, $desc = null)
+    public static function albumCreate()
     {
         $db = self::getConfig()->getDb();
         $sql = 'INSERT INTO album (id, title, description) VALUES (?,?,?)';
@@ -45,6 +46,7 @@ class PostPlug extends Seed
         if ($stmt->execute()) {
             $id = $db->lastInsertId();
             $stmt->closeCursor();
+            return Album::load(99999);
         }
         $stmt->closeCursor();
         return null;

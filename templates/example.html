@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="albumApp">
+<head>
+    <meta charset="UTF-8">
+    <title>ajax</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(function(){
+
+        $('#thread_add').click(function(){
+            var form_data = new FormData($('#thread_form')[0]);
+            var title = $('#title').val();
+            var title_list = $('#title_list');
+
+            $.ajax({
+                url: 'http://aboard/guestbook/postplug/thread/create/'+title,
+                type: "GET",
+                dataType:'json',
+                success: function(msg){
+                    title_list.append(
+                        '<div id='+msg.thread.token+'><b>Token</b>：'+msg.thread.token+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+                        '<b>Title</b>：'+msg.thread.title+'&nbsp;&nbsp;'+
+                        '<input type="button" id="thread_edit" class="thread_edit" name="thread_edit" value="修改" />'+
+                        '<input type="button" id="thread_del" class="thread_del" name="thread_del" value="刪除" /></div>');
+
+                }
+
+            });
+
+            return false;
+        })
+
+        $(document).on('click', '.thread_edit', function() {
+            $(this).parent().append('<input type="button" class="title_editok" name="title_editok" value="確定修改" />');
+            $(this).parent().append('<input type="button" class="title_editno" name="title_editno" value="取消" />');
+            $(this).hide();
+            $('.thread_del').hide();
+        });
+
+
+        $('#post_submit').click(function(){
+            var form_data = new FormData($('#post_form')[0]);
+
+            $.ajax({
+                url: 'http://aboard/guestbook/postplug/post/create',
+                data:  form_data,
+                type:"POST",
+                contentType: false,
+                processData: false,
+                success: function(msg){
+                    alert(msg);
+                }
+            });
+
+            return false;
+
+        })
+
+        $('.delete_img').click(function(){
+            var $this = $(this),
+                $img  = $this.prev('img');
+
+
+            if($this.text() == '刪除圖片'){
+                $this.text('復原圖片');
+                $img.hide();
+                $this.parent().append('<input type="file" id="file" name="file" class="inp">');
+            }else{
+                $this.text('刪除圖片');
+                $img.show();
+                $this.parent().find('.inp').remove();
+            }
+
+            return false;
+        });
+    });
+    </script>
+</head>
+<body>
+    <form action="" id="thread_form" >
+        標題(title):<input type="text" id="title" name="title">
+        <button type="submit" id="thread_add">新增標題</button>
+        <div id="title_list"></div>
+    </form>
+    <p></p>
+    <form action="" id="post_form" enctype="multipart/form-data">
+        標題ID(tid):<input type="text" name="tid"><br>
+        內容(content):<input type="text" name="content">
+        <input type="file" id="file" name="file" >
+        <button type="submit" id="post_submit">送出</button>
+    </form>
+</body>
+</html>

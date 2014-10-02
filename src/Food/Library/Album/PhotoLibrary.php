@@ -31,7 +31,7 @@ class PhotoLibrary extends Seed
         if ($_FILES["file"]["error"] > 0) {
             $msg = '1';
         } else {
-            if (file_exists($_FILES["file"]["name"])) {
+            if (!file_exists($_FILES["file"]["tmp_name"])) {
                 
                 $msg = '2';
             } else {

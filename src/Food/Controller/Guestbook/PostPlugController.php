@@ -5,19 +5,19 @@ namespace Food\Controller\Guestbook;
 use Fruit\Seed;
 use Food\Model\Guestbook\Post;
 use Food\Model\Guestbook\Thread;
+use Food\Model\Guestbook\PostPlug;
 use Food\Model\Album\Photo;
 use Food\Model\Album\Album;
 use Food\Library\Guestbook\PostLibrary;
+use Food\Library\Guestbook\PostPlugLibrary;
 use Food\Library\Guestbook\ThreadLibrary;
 use Food\Library\Album\AlbumLibrary;
 use Food\Library\Album\PhotoLibrary;
 
-use Food\Model\Guestbook\PostPlug;
-
 class PostPlugController extends Seed
 {
     /**
-     * 列出所有標題及留言
+     * 取得所有標題及留言
      *
      * @return JSON { 'thread': {
      *     'token': token,
@@ -36,18 +36,21 @@ class PostPlugController extends Seed
      *    }   
      *}
      */
-    public function index()
+    public function getAllThread()
     {
         $threadAll = ThreadLibrary::index();
 
-        foreach ($threadAll['thread'] as $thread_key => $value) {
-            foreach ($value['post'] as $key => $value) {
-                $post = Post::load($key);
-                $post_plug = PostPlug::loadByPost($post);
-                if ($post_plug) {
-                    $threadAll['thread'][$thread_key]['post'][$key]['photoID'] = $post_plug->getPhotoID();
-                } else {
-                    $threadAll['thread'][$thread_key]['post'][$key]['photoID'] = null;
+        foreach ($threadAll['thread'] as $thread_key => $t) {
+            if (isset($t['post'])) {
+                $arr = $t['post'];
+                foreach ((array)$arr as $key => $p) {
+                    $post = Post::load($key);
+                    $post_plug = PostPlug::loadByPost($post);
+                    if ($post_plug instanceof PostPlug) {
+                        $threadAll['thread'][$thread_key]['post'][$key]['photoID'] = $post_plug->getPhotoID();
+                    } else {
+                        $threadAll['thread'][$thread_key]['post'][$key]['photoID'] = null;
+                    }
                 }
             }
         }
@@ -78,10 +81,22 @@ class PostPlugController extends Seed
      *    }   
      *}
      */
-    public function view($token = null)
+    public function getThread($token = null)
     {
-        $msg = ThreadLibrary::view($token);
-        return json_encode($msg);
+        $thread = ThreadLibrary::view($token);
+        if (isset($thread['thread']['post'])) {
+            $arr = $thread['thread']['post'];
+            foreach ((array)$arr as $key => $p) {
+                $post = Post::load($key);
+                $post_plug = PostPlug::loadByPost($post);
+                if ($post_plug instanceof PostPlug) {
+                    $thread['thread']['post'][$key]['photoID'] = $post_plug->getPhotoID();
+                } else {
+                    $thread['thread']['post'][$key]['photoID'] = null;
+                }
+            }
+        }
+        return json_encode($thread);
     }
 
     /**
@@ -99,13 +114,15 @@ class PostPlugController extends Seed
                 'token' => null
             );
         } else {
-            $data = new ThreadLibrary;
-            $thread = $data->create($title);
+            $thread = ThreadLibrary::create($title);
             if ($thread instanceof Thread) {
                 $msg = array(
                     'status' => true,
-                    'msg' => 'Success. Thread was created.',
-                    'token' => $thread->getToken()
+                    'msg'    => 'Success. Thread was created.',
+                    'thread' => array(
+                        'token'  => $thread->getToken(),
+                        'title'  => $thread->getTitle()
+                    )
                 );
             } else {
                 $msg = array(
@@ -115,6 +132,8 @@ class PostPlugController extends Seed
                 );
             }
         }
+
+        header('Content-Type: application/json; charset=utf-8');
         return json_encode($msg);
 
     }
@@ -197,16 +216,6 @@ class PostPlugController extends Seed
     {
         $tid = $_POST['tid'];
         $content = $_POST['content'];
-        // Create Album and set default
-        $data = Album::load(99999);
-        if ($data == null) {
-            $title = 'Post album';
-            $desc = 'Save post photo';
-            $data = PostPlug::albumCreate($title, $desc);
-        }
-        $aid = 99999;
-        $title = 'Post photo';
-        $desc = null;
 
         // Create Post
         $thread = Thread::load($tid);
@@ -219,27 +228,17 @@ class PostPlugController extends Seed
 
             return json_encode($msg);
         }
-        if ($_FILES['file']['name'] != null) {
-            $content_rule  = '/^.{0,65535}$/';
-        } else {
-            $content_rule  = '/^.{1,65535}$/';
-        }
-        $content  = htmlentities(trim($content), ENT_QUOTES, 'UTF-8');
-        if ($thread instanceof Thread) {
-            if (!preg_match($content_rule, $content)) {
-                $msg = array(
-                    'status' => false,
-                    'msg' => 'Error. The content does not conform to rule.',
-                    'token'  => null
-                );
+        
+        $content = PostPlugLibrary::verifyPost($post = null, $content);
+        if (is_array($content)) {
 
-                return json_encode($msg);
-            }
-            $post_obj = Post::create($thread, $content);
+            return json_encode($content);
         }
-        if ($_FILES['file']['name'] != null) {
-            $upload = PhotoLibrary::doupload($aid, $title, $desc);
-            $photo_obj = Photo::load($upload['Token']);
+        
+        $post_obj = Post::create($thread, $content);
+        $photo_obj = PostPlugLibrary::checkUpload();
+
+        if ($photo_obj) {
             $post_plug = PostPlug::create($photo_obj, $post_obj);
             $msg = array(
                 'status' => true,
@@ -272,37 +271,24 @@ class PostPlugController extends Seed
 
         $post_obj = Post::load($post);
         $post_plug = PostPlug::loadByPost($post_obj);
-        if ($post_plug instanceof PostPlug) {
-            $content_rule  = '/^.{0,65535}$/';
-        } else {
-            $content_rule  = '/^.{1,65535}$/';
-        }
-        $content  = htmlentities(trim($content), ENT_QUOTES, 'UTF-8');
-        if (preg_match($content_rule, $content)) {
-            if (!$post_obj instanceof Post) {
-                $msg = array(
-                    'status' => false,
-                    'msg' => 'Not found the post.',
-                    'token' => null
-                );
+        $content = PostPlugLibrary::verifyPost($post_plug, $content);
 
-                return json_encode($msg);
-            } else {
-                $post_obj->setContent($content);
-                $post_obj->save();
-                $msg = array(
-                    'status' => true,
-                    'msg' => 'Sucess. The post was edited',
-                    'token' => $post
-                );
-            }
-        } else {
+        if (!$post_obj instanceof Post) {
             $msg = array(
                 'status' => false,
-                'msg' => 'Error. The content does not conform to rule.',
+                'msg' => 'Not found the post.',
                 'token' => null
             );
 
+            return json_encode($msg);
+        } else {
+            $post_obj->setContent($content);
+            $post_obj->save();
+            $msg = array(
+                'status' => true,
+                'msg' => 'Sucess. The post was edited',
+                'token' => $post
+            );
         }
 
         return json_encode($msg);
@@ -357,17 +343,6 @@ class PostPlugController extends Seed
     {
         $post = (int)$_POST['token'];
 
-        // Create Album and set default
-        $data = Album::load(99999);
-        if ($data == null) {
-            $title = 'Post album';
-            $desc = 'Save post photo';
-            $data = PostPlug::albumCreate($title, $desc);
-        }
-        $aid = 99999;
-        $title = 'Post photo';
-        $desc = null;
-
         $post_obj = Post::load($post);
         if ($post_obj == null) {
             $msg = array(
@@ -391,10 +366,14 @@ class PostPlugController extends Seed
         }
 
         if (isset($_FILES['file'])) {
-            if ($_FILES['file']['name'] != null) {
-                $upload = PhotoLibrary::doupload($aid, $title, $desc);
-                $photo_obj = Photo::load($upload['Token']);
+            $photo_obj = PostPlugLibrary::checkUpload();
+            if ($photo_obj) {
                 $post_plug = PostPlug::create($photo_obj, $post_obj);
+                $msg = array(
+                    'status' => true,
+                    'msg' => 'Success. Photo was created.',
+                    'token' => $post_plug->getToken()
+                );
             } else {
                 $msg = array(
                     'status' => false,
@@ -404,13 +383,6 @@ class PostPlugController extends Seed
 
                 return json_encode($msg);
             }
-        }
-        if ($post_plug instanceof PostPlug) {
-            $msg = array(
-                'status' => true,
-                'msg' => 'Success. Photo was created.',
-                'token' => $post_plug->getToken()
-            );
         }
 
         return json_encode($msg);
@@ -426,9 +398,6 @@ class PostPlugController extends Seed
     public function photoEdit()
     {
         $post = (int)$_POST['token'];
-        $aid = 99999;
-        $title = 'Post photo';
-        $desc = null;
 
         $post_obj = Post::load($post);
         if (!$post_obj instanceof Post) {

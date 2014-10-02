@@ -53,7 +53,7 @@ class PostLibrary extends Seed
      * @param  string $content 內容
      * @return Post object or null
      */
-    public function create($tid, $content)
+    public static function create($tid, $content)
     {
         $thread = Thread::load($tid);
         $content_rule  = '/^.{1,65535}$/';
@@ -75,7 +75,7 @@ class PostLibrary extends Seed
      * @param  Post $p Post object
      * @param  string $content 內容
      */
-    public function edit($p, $content)
+    public static function edit($p, $content)
     {
         $content_rule  = '/^.{1,65535}$/';
         $content  = htmlentities(trim($content), ENT_QUOTES, 'UTF-8');

@@ -87,7 +87,7 @@ class ThreadLibrary extends Seed
      * @param  string $title 標題
      * @return Thread object or null
      */
-    public function create($title)
+    public static function create($title)
     {
         $title_rule  = '/^.{1,128}$/';
         $title  = htmlentities(trim($title), ENT_QUOTES, 'UTF-8');
@@ -106,7 +106,7 @@ class ThreadLibrary extends Seed
      * @param  Thread $t Thread object
      * @param  string $title 標題
      */
-    public function edit($t, $title)
+    public static function edit($t, $title)
     {
         $title_rule  = '/^.{1,128}$/';
         $title  = htmlentities(trim($title), ENT_QUOTES, 'UTF-8');
