@@ -194,4 +194,86 @@ $mux->get('/photo/show/:id', [
     'show'
 ]);
 
+// PostPlugController
+
+$mux->get(
+    '/guestbook/postplug',
+    ['Food\Controller\Guestbook\PostPlugController', 'getAllThread']
+);
+
+$mux->get(
+    '/guestbook/postplug/view/:token',
+    ['Food\Controller\Guestbook\PostPlugController', 'getThread']
+);
+
+$mux->get(
+    '/guestbook/postplug/thread/create',
+    ['Food\Controller\Guestbook\PostPlugController', 'threadCreate']
+);
+
+$mux->get(
+    '/guestbook/postplug/thread/create/:title',
+    ['Food\Controller\Guestbook\PostPlugController', 'threadCreate'],
+    ['default' => [ 'title' => null, ]]
+);
+
+$mux->get(
+    '/guestbook/postplug/thread/edit/:token/:title',
+    ['Food\Controller\Guestbook\PostPlugController', 'threadEdit'],
+    ['require' => [ 'token' => '\d+', ], 'default' => ['token' => null, 'title' => null, ]]
+);
+
+$mux->get(
+    '/guestbook/postplug/thread/delete/:token',
+    ['Food\Controller\Guestbook\PostPlugController', 'threadDelete'],
+    ['require' => [ 'token' => '\d+', ], 'default' => [ 'token' => null, ]]
+);
+
+
+$mux->post(
+    '/guestbook/postplug/post/create',
+    ['Food\Controller\Guestbook\PostPlugController', 'postCreate']
+);
+
+$mux->post(
+    '/guestbook/postplug/post/create/:tid/:content',
+    ['Food\Controller\Guestbook\PostPlugController', 'postCreate'],
+    ['require' => [ 'tid' => '\d+', ], 'default' => ['tid' => null, 'content' => null, ]]
+);
+
+$mux->post(
+    '/guestbook/postplug/post/edit',
+    ['Food\Controller\Guestbook\PostPlugController', 'postEdit']
+);
+
+$mux->post(
+    '/guestbook/postplug/post/edit/:token/:content',
+    ['Food\Controller\Guestbook\PostPlugController', 'postEdit'],
+    ['require' => [ 'token' => '\d+', ], 'default' => ['token' => null, 'content' => null, ]]
+);
+
+$mux->post(
+    '/guestbook/postplug/post/delete',
+    ['Food\Controller\Guestbook\PostPlugController', 'postDelete']
+);
+
+$mux->post(
+    '/guestbook/postplug/photo/create',
+    ['Food\Controller\Guestbook\PostPlugController', 'photoCreate']
+);
+
+$mux->post(
+    '/guestbook/postplug/photo/edit',
+    ['Food\Controller\Guestbook\PostPlugController', 'photoEdit']
+);
+
+$mux->post(
+    '/guestbook/postplug/photo/delete',
+    ['Food\Controller\Guestbook\PostPlugController', 'photoDelete']
+);
+
+$mux->get(
+    '/guestbook/postplug/index',
+    ['Food\Controller\Guestbook\PostPlugExample', 'index']
+);
 return $mux;

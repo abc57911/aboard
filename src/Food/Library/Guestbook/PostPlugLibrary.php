@@ -27,8 +27,6 @@ class PostPlugLibrary
         } else {
             $content_rule  = '/^.{1,65535}$/';
         }
-        // var_dump($content_rule);
-        // exit;
         $content  = htmlentities(trim($content), ENT_QUOTES, 'UTF-8');
         if (!preg_match($content_rule, $content)) {
             $msg = array(

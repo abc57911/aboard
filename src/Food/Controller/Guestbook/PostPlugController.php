@@ -55,6 +55,7 @@ class PostPlugController extends Seed
             }
         }
 
+        header('Content-Type: application/json; charset=utf-8');
         return json_encode($threadAll);
     }
 
@@ -150,7 +151,7 @@ class PostPlugController extends Seed
         if ($token == null || $title == null) {
             $msg = array(
                 'status' => false,
-                'msg' => 'Error. token and title is null.',
+                'msg' => 'Error. token or title is null.',
                 'token' => null
             );
         } else {
@@ -170,6 +171,7 @@ class PostPlugController extends Seed
                 );
             }
         }
+        header('Content-Type: application/json; charset=utf-8');
         return json_encode($msg);
     }
 

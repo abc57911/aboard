@@ -123,27 +123,6 @@ class PhotoLibrary extends Seed
     }
 
     /**
-     * 取得照片
-     *
-     * @param string $id
-     *            圖片id
-     * @return 圖片 or array $end = [ending => 'no image']
-     */
-    public static function show($id)
-    {
-        $photo = Photo::load($id);
-        if ($photo != null) {
-            header('Content-Type: image/jpeg');
-            $photo->readFile();
-        } else {
-            $end = [
-                "ending" => "no image"
-            ];
-            return $end;
-        }
-    }
-
-    /**
      * 取得照片明細
      *
      * @param string $id

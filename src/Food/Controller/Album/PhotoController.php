@@ -134,7 +134,8 @@ class PhotoController extends Seed
     {
         $photo = Photo::load($id);
         if ($photo != null) {
-            header('Content-Type: image/jpeg');
+            $mime = $photo->getMime();
+            header('Content-Type: ' . $mime);
             $photo->readFile();
         } else {
             $end = [

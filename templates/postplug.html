@@ -2,14 +2,59 @@
 <html lang="en" ng-app="albumApp">
 <head>
     <meta charset="UTF-8">
-    <title>ajax</title>
+    <title>PostPlug</title>
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <style>
+        html {
+            font-family: '宋体',Verdana, Arial, '微軟正黑體';
+            background-color: #DCDCDC
+        }
+        h1 {
+            font-size: 200%;
+            color: #000080;
+
+        }
+        h2 {
+            font-size: 100%;
+        }
+
+        #thread {
+            float: left;
+            margin-left: 40px;
+            margin-right: 80px;
+        }
+
+        #post {
+            float: left;
+            margin-right: 80px;
+        }
+
+        #photo {
+            float: left;
+        }
+
+    </style>
     <script type="text/javascript">
     $(function(){
 
-        $('#thread_add').click(function(){
-            var form_data = new FormData($('#thread_form')[0]);
-            var title = $('#title').val();
+        $.ajax({
+            url: 'http://aboard/guestbook/postplug',
+            type: "GET",
+            dataType:'json',
+            success: function(msg){
+                for(var k in msg['thread']) {
+                    $('#title_list').append(
+                    '<div id="'+k+'" class="threadList" data-id="'+k+'" ><b>Token</b>：'+k+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+                        '<b>Title</b>：'+msg['thread'][k].title+'</div>');
+                }
+            }
+        });
+
+        $('#btn_addThread').click(function(){
+            var form_data = new FormData($('#form_addThread')[0]);
+            var title = $('#add_title').val();
             var title_list = $('#title_list');
 
             $.ajax({
@@ -18,11 +63,9 @@
                 dataType:'json',
                 success: function(msg){
                     title_list.append(
-                        '<div id='+msg.thread.token+'><b>Token</b>：'+msg.thread.token+'&nbsp;&nbsp;&nbsp;&nbsp;'+
-                        '<b>Title</b>：'+msg.thread.title+'&nbsp;&nbsp;'+
-                        '<input type="button" id="thread_edit" class="thread_edit" name="thread_edit" value="修改" />'+
-                        '<input type="button" id="thread_del" class="thread_del" name="thread_del" value="刪除" /></div>');
-
+                        '<div id='+msg.thread.token+'  class="threadList" data-id="'+msg.thread.token+'" ><b>Token</b>：'+msg.thread.token+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+                        '<b>Title</b>：'+msg.thread.title+'&nbsp;&nbsp;'+'</div>');
+                    alert(msg.msg);
                 }
 
             });
@@ -30,25 +73,74 @@
             return false;
         })
 
-        $(document).on('click', '.thread_edit', function() {
-            $(this).parent().append('<input type="button" class="title_editok" name="title_editok" value="確定修改" />');
-            $(this).parent().append('<input type="button" class="title_editno" name="title_editno" value="取消" />');
-            $(this).hide();
-            $('.thread_del').hide();
-        });
+        $('#btn_editThread').click(function(){
+            var form_data = new FormData($('form_editThread')[0]);
+            var threadID = $('#edit_threadID').val();
+            var title = $('#edit_title').val();
 
+            $.ajax({
+                url: 'http://aboard/guestbook/postplug/thread/edit/'+threadID+'/'+title,
+                type: "GET",
+                dataType: 'json',
+                success: function(msg){
+                    if (threadID != '' && title != '') {
+                        $('#'+threadID).html(
+                            '<div id='+threadID+'><b>Token</b>：'+msg.token+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+                            '<b>Title</b>：'+title+'</div>');
+                        alert(msg.msg);
+                    } else {
+                        alert('Error. ThreadID or title is null.');
+                    };
+                }
+            });
 
-        $('#post_submit').click(function(){
-            var form_data = new FormData($('#post_form')[0]);
+            return false;
+        })
+
+        $('#btn_delThread').click(function(){
+            var form_data = new FormData($('form_delThread')[0]),
+                $threadID = $('#del_threadID'),
+                threadID_val = $threadID.val();
+
+            $.ajax({
+                url: 'http://aboard/guestbook/postplug/thread/delete/'+threadID_val,
+                type: "GET",
+                dataType: 'json',
+                success: function(msg){
+                    if (msg.status) {
+                        $('#'+threadID_val).remove();
+                        alert(msg.msg);
+                        $threadID.val('');
+                        $('#edit_threadID').val('');
+                        $('#post_add_tid').val('');
+                    } else {
+                        alert(msg.msg);
+                    };
+                }
+            });
+
+            return false;
+        })
+
+        $('#btn_addPost').click(function(){
+            var form_data = new FormData($('#form_addPost')[0]);
+            var content = $('#post_add_content').val();
+            var post_list = $('#post_list');
 
             $.ajax({
                 url: 'http://aboard/guestbook/postplug/post/create',
-                data:  form_data,
                 type:"POST",
-                contentType: false,
+                data: form_data,
+                cache: false,
+                dataType: 'json',
                 processData: false,
+                contentType: false,
                 success: function(msg){
-                    alert(msg);
+                    console.log(msg);
+                    post_list.append(
+                        '<div id='+msg.token+'  class="threadList" data-pid="'+msg.token+'" ><b>Token</b>：'+msg.token+'&nbsp;&nbsp;&nbsp;&nbsp;'+
+                        '<b>Title</b>：'+content+'&nbsp;&nbsp;'+'</div>');
+
                 }
             });
 
@@ -56,38 +148,86 @@
 
         })
 
-        $('.delete_img').click(function(){
-            var $this = $(this),
-                $img  = $this.prev('img');
-
-
-            if($this.text() == '刪除圖片'){
-                $this.text('復原圖片');
-                $img.hide();
-                $this.parent().append('<input type="file" id="file" name="file" class="inp">');
-            }else{
-                $this.text('刪除圖片');
-                $img.show();
-                $this.parent().find('.inp').remove();
-            }
-
-            return false;
-        });
+        $('#title_list').on('click', '.threadList', function(){
+            var threadID_dataID = $(this).attr('data-id');
+            $('.threadList').css('font-size', '16px');
+            $('#'+threadID_dataID).css('font-size', '+=2px');
+            $('#edit_threadID').val(threadID_dataID);
+            $('#del_threadID').val(threadID_dataID);
+            $('#post_add_tid').val(threadID_dataID);
+        })
     });
     </script>
 </head>
 <body>
-    <form action="" id="thread_form" >
-        標題(title):<input type="text" id="title" name="title">
-        <button type="submit" id="thread_add">新增標題</button>
-        <div id="title_list"></div>
-    </form>
-    <p></p>
-    <form action="" id="post_form" enctype="multipart/form-data">
-        標題ID(tid):<input type="text" name="tid"><br>
-        內容(content):<input type="text" name="content">
-        <input type="file" id="file" name="file" >
-        <button type="submit" id="post_submit">送出</button>
-    </form>
+    <div id="thread";>
+            <h1>THREAD</h1>
+        <form action="" id="form_addThread" >
+            <h2>新增標題</h2>
+            標題(title):
+            <input type="text" id="add_title" name="title">
+            <button type="submit" id="btn_addThread">新增標題</button>
+        </form>
+        <form action="" id="form_editThread">
+            <h2>修改標題</h2>
+            ThreadID:&nbsp;
+            <input type="text" id="edit_threadID" name="threadID"><br>
+            標題(title):
+            <input type="text" id="edit_title" name="title">
+            <button type="submit" id="btn_editThread">修改標題</button>
+        </form>
+        <form action="" id="form_delThread">
+            <h2>刪除標題</h2>
+            ThreadID:&nbsp;
+            <input type="text" id="del_threadID" name="threadID">
+            <button type="submit" id="btn_delThread">刪除標題</button>
+        </form>
+            <div id="title_list"></div>
+    </div>
+
+    <div id="post">
+            <h1>POST</h1>
+        <form action="" id="form_addPost" enctype="multipart/form-data">
+            <h2>新增留言</h2>
+            標題ID(tid):
+            <input type="text" id="post_add_tid" name="tid"><br>
+            內容(content):
+            <input type="text" id="post_add_content" name="content"><br>
+            <input type="file" id="post_add_file" name="file"><br>
+            <button type="submit" id="btn_addPost">新增</button>
+        </form>
+        <form action="" id="form_editPost" enctype="multipart/form-data">
+            <h2>修改留言</h2>
+            留言ID(postID):<input type="text" id="post_edit_id" name="tid"><br>
+            內容(content):<input type="text" id="post_edit_content" name="content"><br>
+            <button type="submit" id="btn_editPost">修改</button>
+        </form>
+        <form action="" id="form_delPost">
+            <h2>刪除留言</h2>
+            留言ID(postID):<input type="text" id="post_del_id" name="tid"><br>
+            <button type="submit" id="btn_delPost">刪除</button>
+        </form>
+            <div id="post_list"></div>
+    </div>
+    
+    <div id="photo">
+        <form action="" id="photo_form" enctype="multipart/form-data">
+            <h1>PHOTO</h1>
+            <h2>新增圖片</h2>
+            留言ID(token): <input type="text" name="postID"><br>
+            <input type="file" id="file" name="file"><br>
+            <button type="submit" id="btn_addPhoto">新增</button>
+
+            <h2>更換圖片</h2>
+            留言ID(token): <input type="text" name="postID"><br>
+            <input type="file" id="file" name="file"><br>
+            <button type="submit" id="btn_editPhoto">更換</button>
+
+            <h2>刪除圖片</h2>
+            留言ID(token): <input type="text" name="postID"><br>
+            <button type="submit" id="btn_delPhoto">刪除</button>
+            
+        </form>
+    </div>
 </body>
 </html>
